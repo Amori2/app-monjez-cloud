@@ -1,0 +1,3300 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+<style id="af-splash-cloak">
+html, body { background-color: #575757 !important; }
+body > *:not(#af-native-splash-overlay) { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+#af-native-splash-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 2147483647 !important;
+  background: #575757 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: 'Cairo', sans-serif !important;
+  opacity: 1;
+  visibility: visible !important;
+  transition: opacity 0.38s ease !important;
+}
+</style><script>
+(function(){
+  window.addEventListener('error',function(e){console.warn('AF-Shield:',e.message);});
+  window.addEventListener('unhandledrejection',function(e){console.warn('AF-Shield:',e.reason);});
+  if(typeof window.Notification==='undefined'){
+    window.Notification=function(){};
+    window.Notification.permission='granted';
+    window.Notification.requestPermission=function(cb){if(cb)cb('granted');return Promise.resolve('granted');};
+  }
+  if(!('serviceWorker' in navigator)||location.protocol==='file:'){
+    try{Object.defineProperty(navigator,'serviceWorker',{value:{register:function(){return Promise.resolve({});},ready:Promise.resolve({}),getRegistrations:function(){return Promise.resolve([]);},addEventListener:function(){}},configurable:true});}catch(e){}
+  }
+  try{localStorage.setItem('__t','1');localStorage.removeItem('__t');}catch(e){
+    var m={};var s={getItem:function(k){return m.hasOwnProperty(k)?m[k]:null;},setItem:function(k,v){m[k]=String(v);},removeItem:function(k){delete m[k];},clear:function(){m={};}};
+    try{Object.defineProperty(window,'localStorage',{value:s});Object.defineProperty(window,'sessionStorage',{value:s});}catch(err){}
+  }
+  var op=history.pushState,or=history.replaceState;
+  history.pushState=function(s,t,u){try{return op.apply(this,arguments);}catch(e){}};
+  history.replaceState=function(s,t,u){try{return or.apply(this,arguments);}catch(e){}};
+  if(!navigator.clipboard)navigator.clipboard={};
+  if(!navigator.clipboard.writeText){
+    navigator.clipboard.writeText=function(t){return new Promise(function(res){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(a);res();});};
+  }
+  
+  function finishSplash() {
+    var sp = document.getElementById('af-native-splash-overlay');
+    if (!sp && document.body) {
+      sp = document.createElement('div');
+      sp.id = 'af-native-splash-overlay';
+      sp.innerHTML = "<div style=\"display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;width:100%;\"><div style=\"font-size:12px;color:#94a3b8;margin-bottom:22px;\">بسم الله الرحمن الرحيم </div><div style=\"width:180px;height:6px;background:rgba(255,255,255,0.12);border-radius:99px;overflow:hidden;margin-top:8px;\">\n          <div style=\"height:100%;background:#D69015;width:0%;border-radius:99px;animation:afBarFill 1800ms cubic-bezier(0.4,0,0.2,1) forwards;\"></div>\n        </div><style>@keyframes afSpin{to{transform:rotate(360deg)}} @keyframes afBarFill{0%{width:0%}100%{width:100%}}</style></div>";
+      document.body.insertBefore(sp, document.body.firstChild);
+    }
+    setTimeout(function() {
+      var cloak = document.getElementById('af-splash-cloak');
+      if (sp) {
+        sp.style.cssText = 'position:fixed !important;inset:0 !important;width:100vw !important;height:100vh !important;z-index:2147483647 !important;background:#575757 !important;display:flex !important;align-items:center !important;justify-content:center !important;font-family:sans-serif !important;opacity:1;transition:opacity 0.38s ease !important;';
+      }
+      if (cloak) cloak.remove();
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          if (sp) {
+            sp.style.opacity = '0';
+            setTimeout(function(){ if (sp && sp.parentNode) sp.remove(); }, 400);
+          }
+        });
+      });
+    }, 1800);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', finishSplash);
+  } else {
+    finishSplash();
+  }
+  
+  function injectAppVersionBadge() {
+    if (document.getElementById('af-injected-version-badge')) return;
+    var badge = document.createElement('span');
+    badge.id = 'af-injected-version-badge';
+    badge.dir = 'ltr';
+    badge.textContent = "v1.0.0";
+    var shapeCss = "pill" === 'circle'
+      ? 'min-width:26px;height:26px;padding:0 6px;border-radius:999px;'
+      : ("pill" === 'pill' ? 'height:22px;padding:0 9px;border-radius:999px;' : 'height:23px;padding:0 8px;border-radius:7px;');
+    var baseCss = 'display:inline-flex;align-items:center;justify-content:center;font-family:monospace,sans-serif;font-weight:800;font-size:11px;line-height:1;color:#ffffff;background:#334155;border:1px solid rgba(255,255,255,0.28);box-shadow:0 2px 8px rgba(0,0,0,0.25);user-select:none;shrink:0;vertical-align:middle;' + shapeCss;
+    var pos = "title_inline";
+    if (pos.indexOf('title_') === 0) {
+      var titleEl = document.querySelector('header h1, .app-header h1, .brand-title, h1, .header-title, .app-title');
+      if (titleEl) {
+        if (pos === 'title_below') {
+          var wrap = document.createElement('div');
+          wrap.style.cssText = 'margin-top:4px;display:flex;align-items:center;';
+          badge.style.cssText = baseCss;
+          wrap.appendChild(badge);
+          titleEl.insertAdjacentElement('afterend', wrap);
+          return;
+        }
+        titleEl.style.display = 'inline-flex';
+        titleEl.style.alignItems = 'center';
+        titleEl.style.gap = '8px';
+        titleEl.style.flexWrap = 'wrap';
+        badge.style.cssText = baseCss;
+        if (pos === 'title_before') {
+          titleEl.insertBefore(badge, titleEl.firstChild);
+        } else {
+          titleEl.appendChild(badge);
+        }
+        return;
+      }
+    }
+    var fixedMap = {
+      top_left: 'position:fixed;top:12px;left:12px;z-index:2147483000;',
+      top_center: 'position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:2147483000;',
+      top_right: 'position:fixed;top:12px;right:12px;z-index:2147483000;',
+      bottom_left: 'position:fixed;bottom:14px;left:12px;z-index:2147483000;',
+      bottom_center: 'position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:2147483000;',
+      bottom_right: 'position:fixed;bottom:14px;right:12px;z-index:2147483000;'
+    };
+    badge.style.cssText = baseCss + (fixedMap[pos] || fixedMap.top_left);
+    document.body.appendChild(badge);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectAppVersionBadge);
+  } else {
+    injectAppVersionBadge();
+  }
+})();
+</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>مُنجز - إدارة المهام والتركيز</title>
+
+  <!-- 1. ANDROID WEBVIEW & FILE:// PROTOCOL ANTI-FREEZE COMPATIBILITY SHIELD -->
+  <script>
+    (function () {
+      if (typeof window.Notification === 'undefined') {
+        window.Notification = {
+          permission: 'denied',
+          requestPermission: function () { return Promise.resolve('denied'); }
+        };
+      }
+      if (!('serviceWorker' in navigator) || window.location.protocol === 'file:') {
+        try {
+          Object.defineProperty(navigator, 'serviceWorker', {
+            value: {
+              register: function () { return Promise.resolve({}); },
+              ready: Promise.resolve({}),
+              getRegistrations: function () { return Promise.resolve([]); }
+            },
+            configurable: true
+          });
+        } catch (e) {}
+      }
+      if (typeof window.caches === 'undefined') {
+        window.caches = {
+          open: function () {
+            return Promise.resolve({
+              match: function () { return Promise.resolve(undefined); },
+              put: function () { return Promise.resolve(); },
+              addAll: function () { return Promise.resolve(); }
+            });
+          },
+          keys: function () { return Promise.resolve([]); },
+          match: function () { return Promise.resolve(undefined); }
+        };
+      }
+      var memStore = {};
+      var memSession = {};
+      window.__safeStorage = {
+        getItem: function (k) {
+          try {
+            var v = window.localStorage.getItem(k);
+            return v !== null ? v : (memStore.hasOwnProperty(k) ? memStore[k] : null);
+          } catch (e) {
+            return memStore.hasOwnProperty(k) ? memStore[k] : null;
+          }
+        },
+        setItem: function (k, v) {
+          var s = String(v);
+          memStore[k] = s;
+          try { window.localStorage.setItem(k, s); } catch (e) {}
+        },
+        removeItem: function (k) {
+          delete memStore[k];
+          try { window.localStorage.removeItem(k); } catch (e) {}
+        },
+        clear: function () {
+          memStore = {};
+          try { window.localStorage.clear(); } catch (e) {}
+        }
+      };
+      window.__safeSession = {
+        getItem: function (k) {
+          try {
+            var v = window.sessionStorage.getItem(k);
+            return v !== null ? v : (memSession.hasOwnProperty(k) ? memSession[k] : null);
+          } catch (e) {
+            return memSession.hasOwnProperty(k) ? memSession[k] : null;
+          }
+        },
+        setItem: function (k, v) {
+          var s = String(v);
+          memSession[k] = s;
+          try { window.sessionStorage.setItem(k, s); } catch (e) {}
+        }
+      };
+      var origPush = history.pushState;
+      var origReplace = history.replaceState;
+      history.pushState = function () {
+        try { return origPush.apply(history, arguments); } catch (e) {}
+      };
+      history.replaceState = function () {
+        try { return origReplace.apply(history, arguments); } catch (e) {}
+      };
+      window.copyTextSafe = function (text, onSuccess) {
+        var fallbackCopy = function () {
+          try {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.top = '-9999px';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            if (typeof onSuccess === 'function') onSuccess();
+          } catch (err) {
+            if (typeof window.showToast === 'function') {
+              window.showToast('تعذر النسخ التلقائي، يرجى النسخ يدوياً', 'warning');
+            }
+          }
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText && window.location.protocol !== 'file:') {
+          navigator.clipboard.writeText(text).then(function () {
+            if (typeof onSuccess === 'function') onSuccess();
+          }).catch(fallbackCopy);
+        } else {
+          fallbackCopy();
+        }
+      };
+      window.downloadFileSafe = function (filename, contentStr, mimeType) {
+        mimeType = mimeType || 'application/json;charset=utf-8';
+        try {
+          var b64 = window.btoa(unescape(encodeURIComponent(contentStr)));
+          if (window.AndroidBridge && typeof window.AndroidBridge.saveBase64File === 'function') {
+            window.AndroidBridge.saveBase64File(b64, filename, mimeType);
+            if (typeof window.showToast === 'function') {
+              window.showToast('تم حفظ الملف عبر نظام أندرويد: ' + filename, 'success');
+            }
+            return;
+          }
+          var dataUri = 'data:' + mimeType + ';base64,' + b64;
+          if (window.AndroidBridge && typeof window.AndroidBridge.downloadUrl === 'function') {
+            window.AndroidBridge.downloadUrl(dataUri, filename);
+            if (typeof window.showToast === 'function') {
+              window.showToast('جاري تنزيل الملف: ' + filename, 'success');
+            }
+            return;
+          }
+          var a = document.createElement('a');
+          a.href = dataUri;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          if (typeof window.showToast === 'function') {
+            window.showToast('تم تصدير الملف بنجاح: ' + filename, 'success');
+          }
+        } catch (err) {
+          if (typeof window.showToast === 'function') {
+            window.showToast('حدث خطأ أثناء تصدير الملف', 'error');
+          }
+        }
+      };
+    })();
+  </script>
+
+  <!-- Clear, Thick Arabic Fonts: Readex Pro, Tajawal, Cairo & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Readex+Pro:wght@500;600;700&family=Tajawal:wght@500;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS v3.4.17 -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Readex Pro', 'Tajawal', 'Cairo', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --primary: #458AFF;
+      --primary-rgb: 69, 138, 255;
+      --primary-soft: rgba(69, 138, 255, 0.16);
+      --primary-glow: rgba(69, 138, 255, 0.32);
+      --bg-main: #0B101B;
+      --bg-surface: #141C2B;
+      --bg-elevated: #1E293B;
+      --border-color: rgba(255, 255, 255, 0.11);
+      --text-main: #FFFFFF;
+      --text-muted: #CBD5E1;
+      --app-font: 'Readex Pro', 'Tajawal', 'Cairo', sans-serif;
+      --base-weight: 600;
+    }
+
+    html {
+      font-size: 17px;
+      transition: font-size 0.15s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--app-font);
+      font-weight: var(--base-weight);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      line-height: 1.65;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    p, span, label, input, select, textarea, button, td, th {
+      font-weight: var(--base-weight);
+    }
+
+    h1, h2, h3, h4, strong, .font-bold, .font-extrabold {
+      font-weight: 800 !important;
+    }
+
+    .app-surface {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+    }
+
+    .app-elevated {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+    }
+
+    .app-border {
+      border-color: var(--border-color);
+    }
+
+    .text-muted-custom {
+      color: var(--text-muted);
+    }
+
+    .text-primary-accent {
+      color: var(--primary);
+    }
+
+    .bg-primary-accent {
+      background-color: var(--primary);
+    }
+
+    .bg-primary-soft {
+      background-color: var(--primary-soft);
+    }
+
+    .border-primary-accent {
+      border-color: var(--primary);
+    }
+
+    .shadow-primary-glow {
+      box-shadow: 0 6px 20px -4px var(--primary-glow);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #FFFFFF;
+      font-weight: 800 !important;
+      box-shadow: 0 4px 14px -2px var(--primary-glow);
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.08);
+    }
+
+    .tab-btn {
+      position: relative;
+      transition: all 0.2s ease;
+      color: var(--text-muted);
+      font-weight: 700 !important;
+    }
+    .tab-btn.active {
+      color: var(--primary);
+      background-color: var(--primary-soft);
+      font-weight: 800 !important;
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 15%;
+      left: 15%;
+      height: 3.5px;
+      border-radius: 999px;
+      background-color: var(--primary);
+    }
+
+    /* Priority Right Borders */
+    .priority-1 { border-right: 5px solid #EF4444 !important; }
+    .priority-2 { border-right: 5px solid #F59E0B !important; }
+    .priority-3 { border-right: 5px solid #458AFF !important; }
+    .priority-4 { border-right: 5px solid #64748B !important; }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.3);
+      border-radius: 999px;
+    }
+
+    .breath-orb {
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.8s ease;
+    }
+
+    .flashcard-box {
+      perspective: 1000px;
+    }
+    .flashcard-inner {
+      transition: transform 0.5s;
+      transform-style: preserve-3d;
+    }
+    .flashcard-box.flipped .flashcard-inner {
+      transform: rotateY(180deg);
+    }
+    .flashcard-face {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .flashcard-back {
+      transform: rotateY(180deg);
+    }
+
+    input[type="range"] {
+      accent-color: var(--primary);
+    }
+
+    .hadith-display-text {
+      line-height: 2.35 !important;
+      word-spacing: 0.06em;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+<div id="af-native-splash-overlay"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;width:100%;"><div style="font-size:12px;color:#94a3b8;margin-bottom:22px;">بسم الله الرحمن الرحيم </div><div style="width:180px;height:6px;background:rgba(255,255,255,0.12);border-radius:99px;overflow:hidden;margin-top:8px;">
+          <div style="height:100%;background:#D69015;width:0%;border-radius:99px;animation:afBarFill 1800ms cubic-bezier(0.4,0,0.2,1) forwards;"></div>
+        </div><style>@keyframes afSpin{to{transform:rotate(360deg)}} @keyframes afBarFill{0%{width:0%}100%{width:100%}}</style></div></div>
+
+  <!-- CLEAN, UNCLUTTERED HEADER -->
+  <header class="app-surface sticky top-0 z-30 border-b app-border">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <!-- App Brand: مُنجز -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-primary-accent flex items-center justify-center text-white shadow-primary-glow shrink-0">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight">مُنجز</h1>
+        </div>
+        <!-- Hidden legacy elements kept cleanly out of sight for compatibility -->
+        <div class="hidden">
+          <span id="headerLevelTitle"></span>
+          <span id="headerXPText">0</span>
+          <span id="headerStreakCount">0</span>
+        </div>
+      </div>
+
+      <!-- Live Timer Pill (Appears only when timer is running) -->
+      <button id="headerLiveTimerPill" onclick="window.switchMainTab('focus')" class="hidden items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-soft border border-primary-accent text-xs font-extrabold text-primary-accent">
+        <span class="w-2.5 h-2.5 rounded-full bg-primary-accent animate-ping"></span>
+        <span id="headerLiveTimerMode">المؤقت</span>
+        <span id="headerLiveTimerValue" class="font-mono text-sm" dir="ltr">25:00</span>
+      </button>
+
+      <!-- Essential Clean Controls: Font Size Quick Buttons + Colors/Background + Backup -->
+      <div class="flex items-center gap-2">
+        <!-- Quick Font Size Controls -->
+        <div class="flex items-center app-elevated rounded-xl p-1" title="تكبير أو تصغير حجم الخط">
+          <button onclick="window.StepFontSize(-1)" class="px-2.5 py-1 rounded-lg hover:bg-primary-soft text-xs font-extrabold transition" title="تصغير الخط">A-</button>
+          <span id="headerFontSizeLabel" class="px-1.5 text-xs text-muted-custom font-mono">100%</span>
+          <button onclick="window.StepFontSize(1)" class="px-2.5 py-1 rounded-lg hover:bg-primary-soft text-sm font-extrabold transition" title="تكبير الخط">A+</button>
+        </div>
+
+        <!-- Theme, Background & Font Studio Button -->
+        <button onclick="window.openThemeModal()" class="flex items-center gap-2 px-3.5 py-2 rounded-xl app-elevated hover:border-primary-accent text-xs sm:text-sm font-extrabold transition" title="تخصيص لون الخلفية والأيقونات والخط">
+          <svg class="w-4 h-4 text-primary-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+            <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+            <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+            <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+          </svg>
+          <span>الألوان والخط</span>
+        </button>
+
+        <!-- Data & Reset Button -->
+        <button onclick="window.openBackupModal()" class="p-2.5 rounded-xl app-elevated hover:border-primary-accent transition" title="النسخ الاحتياطي وتصفير التطبيق">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- CLEAN 6-TAB BAR (CLEAR, SPACIOUS, ZERO CLUTTER) -->
+    <nav class="max-w-5xl mx-auto px-3 flex items-center gap-1.5 overflow-x-auto border-t app-border pt-1.5">
+      <button id="navTab_tasks" onclick="window.switchMainTab('tasks')" class="tab-btn active flex items-center gap-2 px-4 py-2.5 rounded-t-xl text-sm whitespace-nowrap">
+        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><path d="m9 14 2 2 4-4"/>
+        </svg>
+        <span>المهام</span>
+        <span id="navBadgeTasks" class="px-2 py-0.5 rounded-full text-xs bg-primary-soft text-primary-accent">0</span>
+      </button>
+
+      <button id="navTab_focus" onclick="window.switchMainTab('focus')" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-t-xl text-sm whitespace-nowrap">
+        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+          <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/>
+        </svg>
+        <span>المؤقت وحاسب الوقت</span>
+      </button>
+
+      <button id="navTab_habits" onclick="window.switchMainTab('habits')" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-t-xl text-sm whitespace-nowrap">
+        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+          <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
+        </svg>
+        <span>المتابعة</span>
+      </button>
+
+      <button id="navTab_energy" onclick="window.switchMainTab('energy')" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-t-xl text-sm whitespace-nowrap">
+        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        <span>طارد النعاس</span>
+      </button>
+
+      <button id="navTab_library" onclick="window.switchMainTab('library')" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-t-xl text-sm whitespace-nowrap">
+        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+        </svg>
+        <span>المكتبة</span>
+      </button>
+
+      <button id="navTab_heart" onclick="window.switchMainTab('heart')" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-t-xl text-sm whitespace-nowrap">
+        <svg class="w-4 h-4 shrink-0 text-emerald-400" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <span>قلبك</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT AREA (CLEAN, CALM, CENTERED MAX-W-4XL) -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
+
+    <!-- ==========================================
+         TAB 1: TASKS (المهام - واجهة هادئة وبسيطة جداً)
+         ========================================== -->
+    <section id="section_tasks" class="space-y-5">
+
+      <!-- Simple Clean Add Task Card -->
+      <div class="app-surface p-4 sm:p-5 rounded-2xl space-y-3">
+        <div class="flex flex-col sm:flex-row gap-2.5">
+          <input id="newTaskTitle" onkeydown="if(event.key==='Enter') window.addTask()" type="text" placeholder="اكتب المهمة الجديدة هنا ثم اضغط إضافة..." class="flex-1 app-elevated rounded-xl px-4 py-3 text-base focus:outline-none focus:border-primary-accent" />
+          <div class="flex gap-2">
+            <button onclick="window.toggleTaskAdvancedForm()" class="px-3.5 py-3 rounded-xl app-elevated text-xs sm:text-sm hover:border-primary-accent transition" title="تحديد الأولوية والتاريخ والخطوات الفرعية">
+              خيارات متقدمة
+            </button>
+            <button onclick="window.addTask()" class="btn-primary px-6 py-3 rounded-xl text-sm sm:text-base flex items-center justify-center gap-1.5">
+              <span>+ إضافة المهمة</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tucked-away Advanced Options (Hidden by default so the screen stays calm!) -->
+        <div id="taskAdvancedDrawer" class="hidden pt-3 border-t app-border space-y-3">
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 text-xs sm:text-sm">
+            <div>
+              <label class="block text-muted-custom mb-1">القسم</label>
+              <select id="newTaskCategory" class="w-full app-elevated rounded-xl px-3 py-2 focus:outline-none">
+                <option value="study">الدراسة</option>
+                <option value="work">العمل</option>
+                <option value="personal">شخصي</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-muted-custom mb-1">الأولوية</label>
+              <select id="newTaskPriority" class="w-full app-elevated rounded-xl px-3 py-2 focus:outline-none">
+                <option value="1">P1 - عاجل ومهم</option>
+                <option value="2" selected>P2 - مهم</option>
+                <option value="3">P3 - متوسط</option>
+                <option value="4">P4 - عادي</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-muted-custom mb-1">التاريخ</label>
+              <input id="newTaskDate" type="date" class="w-full app-elevated rounded-xl px-3 py-2 focus:outline-none" />
+            </div>
+            <div>
+              <label class="block text-muted-custom mb-1">الوقت المقدر (د)</label>
+              <input id="newTaskEstimate" type="number" min="5" max="600" step="5" value="25" class="w-full app-elevated rounded-xl px-3 py-2 focus:outline-none" />
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+              <label class="block text-muted-custom mb-1">التكرار</label>
+              <select id="newTaskRepeat" class="w-full app-elevated rounded-xl px-3 py-2 focus:outline-none">
+                <option value="none">بدون تكرار</option>
+                <option value="daily">يومياً</option>
+                <option value="weekly">أسبوعياً</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+            <div>
+              <label class="block text-muted-custom mb-1">خطوات فرعية (كل خطوة في سطر)</label>
+              <textarea id="newTaskSubtasks" rows="2" placeholder="اكتب الخطوات الفرعية هنا..." class="w-full app-elevated rounded-xl p-2.5 focus:outline-none"></textarea>
+            </div>
+            <div>
+              <label class="block text-muted-custom mb-1">ملاحظات إضافية</label>
+              <textarea id="newTaskNotes" rows="2" placeholder="تفاصيل أو ملاحظات..." class="w-full app-elevated rounded-xl p-2.5 focus:outline-none"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simple Filter & View Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-1.5 overflow-x-auto" id="taskSmartFilters">
+          <button onclick="window.setTaskFilter('all')" data-filter="all" class="task-filter-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm bg-primary-accent text-white">الكل</button>
+          <button onclick="window.setTaskFilter('today')" data-filter="today" class="task-filter-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm app-surface">اليوم</button>
+          <button onclick="window.setTaskFilter('study')" data-filter="study" class="task-filter-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm app-surface">الدراسة</button>
+          <button onclick="window.setTaskFilter('work')" data-filter="work" class="task-filter-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm app-surface">الأعمال</button>
+          <button onclick="window.setTaskFilter('personal')" data-filter="personal" class="task-filter-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm app-surface">شخصي</button>
+          <button onclick="window.setTaskFilter('completed')" data-filter="completed" class="task-filter-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm app-surface">المكتملة</button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <input id="taskSearchInput" oninput="window.renderTasks()" type="text" placeholder="بحث..." class="w-32 sm:w-44 app-surface rounded-xl px-3 py-1.5 text-xs sm:text-sm focus:outline-none focus:border-primary-accent" />
+          <div class="flex items-center app-surface p-1 rounded-xl text-xs">
+            <button id="viewBtn_list" onclick="window.setTaskLayout('list')" class="px-2.5 py-1 rounded-lg bg-primary-accent text-white">قائمة</button>
+            <button id="viewBtn_matrix" onclick="window.setTaskLayout('matrix')" class="px-2.5 py-1 rounded-lg text-muted-custom">مصفوفة أيزنهاور</button>
+            <button id="viewBtn_kanban" onclick="window.setTaskLayout('kanban')" class="px-2.5 py-1 rounded-lg text-muted-custom">كانبان</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subtle Progress Bar -->
+      <div class="app-surface px-4 py-3 rounded-2xl flex items-center justify-between gap-4">
+        <div class="flex items-center gap-2 text-xs sm:text-sm">
+          <span id="dailyProgressGreeting">نسبة إنجاز المهام</span>
+          <span id="dailyCompletionPercent" class="px-2 py-0.5 rounded-lg bg-primary-soft text-primary-accent font-extrabold">0%</span>
+          <span id="dailyProgressSubtext" class="hidden"></span>
+        </div>
+        <div class="flex-1 max-w-xs h-2.5 app-elevated rounded-full overflow-hidden">
+          <div id="dailyProgressBar" class="h-full bg-primary-accent transition-all duration-500" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Tasks Container -->
+      <div id="tasksContainer"></div>
+    </section>
+
+    <!-- ==========================================================
+         TAB 2: POMODORO & STOPWATCH (المؤقت وحاسب الوقت بتصميم صافي)
+         ========================================================== -->
+    <section id="section_focus" class="hidden space-y-5">
+
+      <!-- Mode Switcher Bar -->
+      <div class="app-surface p-3 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-2 app-elevated p-1.5 rounded-xl w-full sm:w-auto">
+          <button id="focusModeBtn_pomodoro" onclick="window.setFocusEngine('pomodoro')" class="flex-1 sm:flex-initial px-5 py-2 rounded-lg text-sm bg-primary-accent text-white">
+            مؤقت بومودورو
+          </button>
+          <button id="focusModeBtn_stopwatch" onclick="window.setFocusEngine('stopwatch')" class="flex-1 sm:flex-initial px-5 py-2 rounded-lg text-sm text-muted-custom">
+            حاسب طول الجلسات (ساعة إيقاف)
+          </button>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <span class="text-xs text-muted-custom whitespace-nowrap">المهمة:</span>
+          <select id="focusLinkedTaskSelect" onchange="window.updateLinkedTask(this.value)" class="flex-1 sm:w-48 app-elevated rounded-xl px-3 py-2 text-xs sm:text-sm focus:outline-none">
+            <option value="">جلسة حرة</option>
+          </select>
+          <button onclick="window.openLockScreenFocusMode()" class="px-3.5 py-2 rounded-xl bg-primary-soft text-primary-accent hover:bg-primary-accent hover:text-white text-xs sm:text-sm font-extrabold transition flex items-center gap-1.5" title="عرض المؤقت على شاشة القفل الدائمة بدون انطفاء">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>شاشة القفل</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Centered Timer Card -->
+      <div class="app-surface rounded-3xl p-6 sm:p-8 flex flex-col items-center">
+
+        <!-- ENGINE A: POMODORO -->
+        <div id="engine_pomodoro" class="w-full flex flex-col items-center space-y-6">
+          <div class="flex items-center gap-2 app-elevated p-1.5 rounded-2xl">
+            <button id="pomoPhase_work" onclick="window.switchPomodoroPhase('work')" class="px-4 py-1.5 rounded-xl text-xs sm:text-sm bg-primary-accent text-white">تركيز</button>
+            <button id="pomoPhase_short" onclick="window.switchPomodoroPhase('short')" class="px-4 py-1.5 rounded-xl text-xs sm:text-sm text-muted-custom">استراحة قصيرة</button>
+            <button id="pomoPhase_long" onclick="window.switchPomodoroPhase('long')" class="px-4 py-1.5 rounded-xl text-xs sm:text-sm text-muted-custom">استراحة طويلة</button>
+          </div>
+
+          <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
+            <svg class="w-full h-full -rotate-90" viewBox="0 0 240 240">
+              <circle cx="120" cy="120" r="106" stroke="currentColor" stroke-width="8" class="opacity-15" fill="none" />
+              <circle id="pomoRingCircle" cx="120" cy="120" r="106" stroke="var(--primary)" stroke-width="10" stroke-dasharray="666" stroke-dashoffset="0" stroke-linecap="round" fill="none" class="transition-all duration-500" />
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+              <span id="pomoStatusLabel" class="text-xs sm:text-sm text-primary-accent mb-1">جلسة تركيز</span>
+              <div id="pomoTimeDisplay" class="font-mono text-5xl sm:text-6xl font-extrabold" dir="ltr">25:00</div>
+              <span id="pomoRoundDisplay" class="text-xs text-muted-custom mt-2">الجولة 1</span>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <button id="pomoStartBtn" onclick="window.togglePomodoro()" class="btn-primary px-8 py-3.5 rounded-2xl text-base flex items-center gap-2">
+              <span id="pomoStartBtnText">ابدأ التركيز</span>
+            </button>
+            <button onclick="window.resetPomodoro()" class="px-4 py-3.5 rounded-2xl app-elevated hover:border-primary-accent text-xs sm:text-sm">
+              إعادة ضبط
+            </button>
+            <button onclick="window.completePomodoroEarly()" class="px-4 py-3.5 rounded-2xl app-elevated text-emerald-400 text-xs sm:text-sm">
+              إنهاء وحفظ
+            </button>
+          </div>
+
+          <!-- Clean Time Customization -->
+          <div class="w-full max-w-lg pt-4 border-t app-border space-y-3">
+            <div class="flex flex-wrap items-center justify-center gap-2">
+              <button onclick="window.applyPomoPreset(25,5,15)" class="px-3 py-1.5 rounded-xl app-elevated text-xs hover:border-primary-accent">25 / 5 د</button>
+              <button onclick="window.applyPomoPreset(50,10,20)" class="px-3 py-1.5 rounded-xl app-elevated text-xs hover:border-primary-accent">50 / 10 د</button>
+              <button onclick="window.applyPomoPreset(90,15,30)" class="px-3 py-1.5 rounded-xl app-elevated text-xs hover:border-primary-accent">90 / 15 د</button>
+              <button onclick="window.applyPomoPreset(15,3,10)" class="px-3 py-1.5 rounded-xl app-elevated text-xs hover:border-primary-accent">15 / 3 د</button>
+            </div>
+            <div class="grid grid-cols-3 gap-3 text-center text-xs">
+              <div class="app-elevated p-2.5 rounded-xl">
+                <label class="block text-muted-custom mb-1">التركيز (دقيقة)</label>
+                <input id="customPomoWork" onchange="window.updateCustomPomoSettings()" type="number" min="1" max="240" value="25" class="w-full bg-transparent text-center text-base font-extrabold text-primary-accent focus:outline-none" />
+              </div>
+              <div class="app-elevated p-2.5 rounded-xl">
+                <label class="block text-muted-custom mb-1">استراحة قصيرة</label>
+                <input id="customPomoShort" onchange="window.updateCustomPomoSettings()" type="number" min="1" max="60" value="5" class="w-full bg-transparent text-center text-base font-extrabold text-emerald-400 focus:outline-none" />
+              </div>
+              <div class="app-elevated p-2.5 rounded-xl">
+                <label class="block text-muted-custom mb-1">استراحة طويلة</label>
+                <input id="customPomoLong" onchange="window.updateCustomPomoSettings()" type="number" min="1" max="90" value="15" class="w-full bg-transparent text-center text-base font-extrabold text-amber-400 focus:outline-none" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ENGINE B: STOPWATCH (حاسب طول الجلسات) -->
+        <div id="engine_stopwatch" class="hidden w-full flex flex-col items-center space-y-6">
+          <span id="swLiveBadge" class="px-4 py-1 rounded-full bg-primary-soft text-primary-accent text-xs sm:text-sm font-extrabold">حاسب طول الجلسة (ساعة إيقاف)</span>
+
+          <div class="w-64 h-64 sm:w-72 sm:h-72 flex flex-col items-center justify-center rounded-full app-elevated border-4 border-primary-accent/40 shadow-primary-glow">
+            <div class="font-mono text-4xl sm:text-5xl font-extrabold text-primary-accent" dir="ltr">
+              <span id="swHours">00</span>:<span id="swMinutes">00</span>:<span id="swSeconds">00</span>
+            </div>
+            <div id="swCentiseconds" class="font-mono text-xl text-muted-custom mt-1" dir="ltr">.00</div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <button id="swStartBtn" onclick="window.toggleStopwatch()" class="btn-primary px-8 py-3.5 rounded-2xl text-base">
+              <span id="swStartBtnText">بدء حساب الجلسة</span>
+            </button>
+            <button onclick="window.recordStopwatchLap()" class="px-4 py-3.5 rounded-2xl app-elevated hover:border-primary-accent text-xs sm:text-sm">
+              تسجيل فاصل (Lap)
+            </button>
+            <button onclick="window.finishAndSaveStopwatchSession()" class="px-4 py-3.5 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm">
+              حفظ الجلسة في السجل
+            </button>
+            <button onclick="window.resetStopwatch()" class="px-4 py-3.5 rounded-2xl app-elevated text-rose-400 text-xs sm:text-sm">
+              تصفير
+            </button>
+          </div>
+
+          <div class="w-full max-w-md max-h-44 overflow-y-auto space-y-1.5 pt-2 border-t app-border" id="swLapsContainer"></div>
+        </div>
+      </div>
+
+      <!-- Calm 2-Card Bottom Row: Ambient Sound & Saved Sessions Log -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="app-surface p-5 rounded-2xl space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm sm:text-base font-extrabold">أصوات التركيز وعزل الضوضاء</h3>
+            <span id="ambientStatusBadge" class="text-xs px-2.5 py-0.5 rounded-full app-elevated text-muted-custom">متوقف</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs sm:text-sm">
+            <button onclick="window.setAmbientSound('off')" id="soundBtn_off" class="sound-btn p-2.5 rounded-xl app-elevated border border-primary-accent text-primary-accent">إيقاف الصوت</button>
+            <button onclick="window.setAmbientSound('brown')" id="soundBtn_brown" class="sound-btn p-2.5 rounded-xl app-elevated">ضوضاء بنية هادئة</button>
+            <button onclick="window.setAmbientSound('rain')" id="soundBtn_rain" class="sound-btn p-2.5 rounded-xl app-elevated">صوت مطر خفيف</button>
+            <button onclick="window.setAmbientSound('alpha')" id="soundBtn_alpha" class="sound-btn p-2.5 rounded-xl app-elevated">تردد تركيز هادئ</button>
+          </div>
+          <div class="flex items-center gap-3 pt-1">
+            <span class="text-xs text-muted-custom">الصوت</span>
+            <input id="ambientVolumeSlider" oninput="window.updateAmbientVolume(this.value)" type="range" min="5" max="100" value="40" class="flex-1" dir="ltr" />
+          </div>
+        </div>
+
+        <div class="app-surface p-5 rounded-2xl space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm sm:text-base font-extrabold">سجل الجلسات المحفوظة</h3>
+            <span id="totalFocusMinutesBadge" class="text-xs sm:text-sm text-primary-accent font-extrabold">0 دقيقة</span>
+          </div>
+          <div id="focusSessionsLogList" class="space-y-2 max-h-48 overflow-y-auto"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         TAB 3: HABITS & FOLLOW-UP (المتابعة اليومية بدون تعقيد)
+         ========================================================== -->
+    <section id="section_habits" class="hidden space-y-5">
+
+      <!-- Add Habit Bar -->
+      <div class="app-surface p-4 rounded-2xl flex flex-col sm:flex-row items-center gap-2.5">
+        <input id="newHabitTitle" onkeydown="if(event.key==='Enter') window.addHabit()" type="text" placeholder="أضف عادة يومية أو هدفاً للمتابعة (مثال: ورد القرآن، مذاكرة ساعتين)..." class="flex-1 w-full app-elevated rounded-xl px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-primary-accent" />
+        <select id="newHabitCategory" class="w-full sm:w-40 app-elevated rounded-xl px-3 py-3 text-xs sm:text-sm">
+          <option value="دراسة">دراسة</option>
+          <option value="عمل">عمل</option>
+          <option value="عبادة">عبادة وورد</option>
+          <option value="صحة">صحة</option>
+        </select>
+        <button onclick="window.addHabit()" class="btn-primary w-full sm:w-auto px-6 py-3 rounded-xl text-sm sm:text-base whitespace-nowrap">
+          + إضافة للمتابعة
+        </button>
+      </div>
+
+      <!-- Weekly Follow-up Table -->
+      <div class="app-surface rounded-2xl p-4 sm:p-5 overflow-x-auto">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-base font-extrabold">جدول المتابعة الأسبوعي (آخر 7 أيام)</h3>
+          <span id="statHabitRate" class="text-sm font-extrabold text-primary-accent">0%</span>
+        </div>
+        <div id="habitsTableContainer" class="min-w-[560px]"></div>
+      </div>
+
+      <!-- Simple 3 Summary Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+        <div class="app-surface p-4 rounded-2xl flex items-center justify-between">
+          <span class="text-xs sm:text-sm text-muted-custom">المهام المنجزة</span>
+          <span class="text-xl font-extrabold" id="statCompletedTasks">0</span>
+        </div>
+        <div class="app-surface p-4 rounded-2xl flex items-center justify-between">
+          <span class="text-xs sm:text-sm text-muted-custom">ساعات التركيز المسجلة</span>
+          <span class="text-xl font-extrabold text-primary-accent" id="statTotalHours">0.0 س</span>
+        </div>
+        <div class="app-surface p-4 rounded-2xl flex items-center justify-between">
+          <span class="text-xs sm:text-sm text-muted-custom">نقاط الإنجاز</span>
+          <span class="text-xl font-extrabold text-emerald-400" id="statTotalXP">0</span>
+          <span id="statNextLevelXP" class="hidden"></span>
+        </div>
+      </div>
+
+      <div class="hidden">
+        <div id="categoryBreakdownBars"></div>
+        <div id="priorityBreakdownBars"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         TAB 4: ANTI-DROWSINESS & ENERGY (طارد النعاس والكسل بهدوء)
+         ========================================================== -->
+    <section id="section_energy" class="hidden space-y-5">
+
+      <!-- Quick State Selector -->
+      <div class="app-surface p-5 rounded-2xl space-y-4">
+        <h2 class="text-base sm:text-lg font-extrabold">كيف تشعر الآن؟ اختر حالتك:</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs sm:text-sm">
+          <button onclick="window.selectEnergyRescue('sleepy')" id="rescueBtn_sleepy" class="rescue-btn p-3 rounded-xl app-elevated border border-primary-accent text-right">
+            <div class="font-extrabold text-primary-accent">أشعر بالنعاس</div>
+          </button>
+          <button onclick="window.selectEnergyRescue('procrastinate')" id="rescueBtn_procrastinate" class="rescue-btn p-3 rounded-xl app-elevated text-right">
+            <div class="font-extrabold text-amber-400">ثقل وتسويف</div>
+          </button>
+          <button onclick="window.selectEnergyRescue('distracted')" id="rescueBtn_distracted" class="rescue-btn p-3 rounded-xl app-elevated text-right">
+            <div class="font-extrabold text-emerald-400">تشتت وسرحان</div>
+          </button>
+          <button onclick="window.selectEnergyRescue('overwhelmed')" id="rescueBtn_overwhelmed" class="rescue-btn p-3 rounded-xl app-elevated text-right">
+            <div class="font-extrabold text-rose-400">تراكم مهام</div>
+          </button>
+        </div>
+
+        <div id="rescueProtocolBox" class="app-elevated p-4 rounded-xl border-r-4 border-primary-accent flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div class="space-y-1">
+            <h4 id="rescueProtocolTitle" class="text-sm sm:text-base font-extrabold text-primary-accent">خطوة سريعة لطرد النعاس:</h4>
+            <p id="rescueProtocolText" class="text-xs sm:text-sm text-muted-custom">اشرب كوب ماء، وابدأ تمرين التنفس بالأسفل لمدة دقيقة لتجديد الأكسجين، واغسل وجهك بماء بارد.</p>
+          </div>
+          <button id="rescueProtocolActionBtn" onclick="window.startBreathingExercise()" class="btn-primary px-4 py-2.5 rounded-xl text-xs sm:text-sm shrink-0">
+            ابدأ تمرين التنفس
+          </button>
+        </div>
+      </div>
+
+      <!-- 2 Clean Interactive Tools: Breathing + 2-Minute Start -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Breathing Tool -->
+        <div class="app-surface p-5 rounded-2xl flex flex-col items-center text-center space-y-4">
+          <div class="w-full flex items-center justify-between">
+            <h3 class="text-sm sm:text-base font-extrabold">تمرين التنفس لطرد الخمول</h3>
+            <select id="breathPatternSelect" onchange="window.resetBreathingExercise()" class="app-elevated text-xs rounded-lg px-2.5 py-1.5">
+              <option value="energize">تنشيط سريع (4-2-4)</option>
+              <option value="box">تركيز (4-4-4-4)</option>
+              <option value="calm">تهدئة (4-7-8)</option>
+            </select>
+          </div>
+
+          <div class="relative w-40 h-40 flex items-center justify-center">
+            <div id="breathOrbOuter" class="breath-orb w-28 h-28 rounded-full bg-primary-soft border-2 border-primary-accent flex items-center justify-center">
+              <div class="text-center">
+                <div id="breathPhaseText" class="text-xs sm:text-sm font-extrabold text-primary-accent">مستعد؟</div>
+                <div id="breathTimerSec" class="font-mono text-lg font-extrabold mt-0.5">--</div>
+              </div>
+            </div>
+          </div>
+
+          <button id="breathToggleBtn" onclick="window.startBreathingExercise()" class="btn-primary w-full py-2.5 rounded-xl text-xs sm:text-sm">
+            بدء تمرين التنفس
+          </button>
+        </div>
+
+        <!-- 2-Minute Rule Breaker -->
+        <div class="app-surface p-5 rounded-2xl flex flex-col justify-between space-y-4">
+          <div>
+            <h3 class="text-sm sm:text-base font-extrabold">قاعدة الدقيقتين لكسر الكسل</h3>
+            <p class="text-xs sm:text-sm text-muted-custom mt-1">عد نفسك بالبدء لمدة 120 ثانية فقط، وستجد أن ثقل البداية قد تلاشى.</p>
+          </div>
+
+          <div class="app-elevated p-4 rounded-xl text-center space-y-1">
+            <div class="text-xs text-muted-custom" id="microChallengeTaskLabel">ابدأ بأصغر خطوة الآن</div>
+            <div id="microChallengeClock" class="font-mono text-4xl font-extrabold text-amber-400" dir="ltr">02:00</div>
+          </div>
+
+          <div class="flex gap-2">
+            <button id="microChallengeBtn" onclick="window.toggleMicroChallenge()" class="btn-primary flex-1 py-2.5 rounded-xl text-xs sm:text-sm">
+              ابدأ دقيقتين فقط
+            </button>
+            <button onclick="window.pickRandomTaskForMicro()" class="px-3.5 py-2.5 rounded-xl app-elevated text-xs sm:text-sm">
+              اختر لي مهمة
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hydration & Physical Refresh -->
+      <div class="app-surface p-5 rounded-2xl space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm sm:text-base font-extrabold">شرب الماء وتجديد النشاط الجسدي</h3>
+          <span id="hydrationCountText" class="text-xs sm:text-sm font-extrabold text-primary-accent">0 / 8 أكواب</span>
+        </div>
+        <div id="waterCupsGrid" class="grid grid-cols-8 gap-2"></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 text-xs sm:text-sm" id="deskRefreshChecklist"></div>
+      </div>
+
+      <!-- Hidden Quote/Badge containers for compatibility -->
+      <div class="hidden">
+        <blockquote id="motivationalQuoteText"></blockquote>
+        <div id="motivationalQuoteTip"></div>
+        <span id="unlockedBadgesCount"></span>
+        <div id="badgesGrid"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         TAB 5: LIBRARY (المكتبة والملخصات)
+         ========================================================== -->
+    <section id="section_library" class="hidden space-y-5">
+      <div class="app-surface p-3 rounded-2xl flex items-center gap-2">
+        <button id="libTab_notes" onclick="window.switchLibraryView('notes')" class="px-4 py-2 rounded-xl text-xs sm:text-sm bg-primary-accent text-white">الملاحظات والملخصات</button>
+        <button id="libTab_cards" onclick="window.switchLibraryView('cards')" class="px-4 py-2 rounded-xl text-xs sm:text-sm app-elevated">بطاقات المراجعة (سؤال/جواب)</button>
+        <button id="libTab_archive" onclick="window.switchLibraryView('archive')" class="px-4 py-2 rounded-xl text-xs sm:text-sm app-elevated">المحفوظات</button>
+      </div>
+
+      <!-- Notes View -->
+      <div id="libView_notes" class="space-y-4">
+        <div class="app-surface p-4 rounded-2xl space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <input id="noteTitleInput" type="text" placeholder="عنوان الملاحظة أو الملخص..." class="sm:col-span-2 app-elevated rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary-accent" />
+            <select id="noteCategoryInput" class="app-elevated rounded-xl px-3 py-2.5 text-xs sm:text-sm">
+              <option value="ملخص دراسة">ملخص دراسة</option>
+              <option value="خطة عمل">خطة عمل</option>
+              <option value="قاعدة مهمة">قاعدة مهمة</option>
+              <option value="فكرة">فكرة عامة</option>
+            </select>
+          </div>
+          <textarea id="noteBodyInput" rows="3" placeholder="اكتب محتوى الملاحظة هنا..." class="w-full app-elevated rounded-xl p-3 text-sm focus:outline-none focus:border-primary-accent"></textarea>
+          <div class="flex items-center justify-between gap-2">
+            <button onclick="window.clearAllNotesConfirm()" class="px-4 py-2.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 hover:bg-rose-500/25 text-xs sm:text-sm font-extrabold transition">
+              تصفير الملاحظات
+            </button>
+            <button onclick="window.addStudyNote()" class="btn-primary px-6 py-2.5 rounded-xl text-xs sm:text-sm">+ حفظ الملاحظة</button>
+          </div>
+        </div>
+        <div id="studyNotesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- Flashcards View -->
+      <div id="libView_cards" class="hidden space-y-4">
+        <div class="app-surface p-4 rounded-2xl space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input id="cardFrontInput" type="text" placeholder="السؤال أو المصطلح..." class="app-elevated rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary-accent" />
+            <input id="cardBackInput" type="text" placeholder="الإجابة..." class="app-elevated rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary-accent" />
+          </div>
+          <div class="flex justify-end">
+            <button onclick="window.addFlashcard()" class="btn-primary px-6 py-2.5 rounded-xl text-xs sm:text-sm">+ إضافة بطاقة</button>
+          </div>
+        </div>
+        <div id="flashcardsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- Archive View -->
+      <div id="libView_archive" class="hidden space-y-4">
+        <div class="app-surface p-5 rounded-2xl space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="text-base font-extrabold">سجل المحفوظات والنسخ الاحتياطي</h3>
+            <div class="flex gap-2">
+              <button onclick="window.exportAllDataJSON()" class="btn-primary px-4 py-2 rounded-xl text-xs sm:text-sm">تصدير نسخة احتياطية</button>
+              <button onclick="window.copyStudyReport()" class="px-4 py-2 rounded-xl app-elevated text-xs sm:text-sm">نسخ التقرير</button>
+            </div>
+          </div>
+          <div id="archiveSummaryBox" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         TAB 6: YOUR HEART (خانة "قلبك" - التذكيرات الإيمانية والسكينة)
+         ========================================================== -->
+    <section id="section_heart" class="hidden space-y-6">
+
+      <!-- GRAND BANNER WITH THE PROPHETIC HADITH IN HUGE BOLD TYPOGRAPHY -->
+      <div class="app-surface rounded-3xl p-6 sm:p-10 border-2 border-primary-accent/40 shadow-primary-glow text-center space-y-4">
+        <div class="flex flex-wrap items-center justify-center gap-2">
+          <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-primary-soft text-primary-accent text-xs sm:text-sm font-extrabold">
+            <span>وصية نبوية عظيمة تملأ قلبك يقيناً وطمأنينة</span>
+          </div>
+          <button onclick="window.setWidgetSource('hadith')" class="px-3 py-1 rounded-full app-elevated hover:border-primary-accent text-xs font-extrabold transition">
+            تثبيت الحديث في الويدجت
+          </button>
+        </div>
+        <p class="hadith-display-text text-xl sm:text-2xl md:text-3xl font-extrabold tracking-normal text-primary-accent py-4 px-2 sm:px-6" style="line-height: 2.35 !important;">
+          «واعلَم أنَّ ما أصابَكَ لم يكُن ليُخطِئَك وما أخطأكَ لم يكُن ليُصيبَكَ ،<br class="hidden sm:inline" /> واعلَم أنَّ النَّصرَ معَ الصَّبرِ ، وأنَّ الفرجَ معَ الكربِ ، وأنَّ معَ العُسرِ يُسرًا»
+        </p>
+      </div>
+
+      <!-- 7 SPIRITUAL PILLARS FOR THE HEART -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- 1. تجديد النية والإخلاص -->
+        <div class="app-surface p-5 rounded-2xl border-r-4 border-emerald-500 space-y-2">
+          <h3 class="text-base sm:text-lg font-extrabold text-emerald-400">١. تجديد النية والإخلاص لله</h3>
+          <p class="text-sm text-muted-custom leading-relaxed">
+            جدّد نيتك قبل كل مذاكرة وعمل؛ احتسب تعبك في طلب العلم وإتقان العمل مرضاةً لله، ونفعاً لنفسك وأهلك وأمتك، فبالنية الصالحة تنقلب عاداتك وساعات دراستك إلى عبادات مأجورة.
+          </p>
+        </div>
+
+        <!-- 2. السعي والتوكل على الله -->
+        <div class="app-surface p-5 rounded-2xl border-r-4 border-sky-500 space-y-2">
+          <h3 class="text-base sm:text-lg font-extrabold text-sky-400">٢. السعي والتوكل على الله</h3>
+          <p class="text-sm text-muted-custom leading-relaxed">
+            ابذل جهدك وخذ بالأسباب كاملةً بعزيمة، ولكن لا تعلّق قلبك بغير الله. توكّل على الحي القيوم، واستعن به في كل مسألة صعبة، وكن على يقين أن الله لا يضيع أجر من أحسن عملاً.
+          </p>
+        </div>
+
+        <!-- 3. الاعتناء بالأذكار والقرآن -->
+        <div class="app-surface p-5 rounded-2xl border-r-4 border-amber-500 space-y-2">
+          <h3 class="text-base sm:text-lg font-extrabold text-amber-400">٣. الاعتناء بالأذكار والقرآن الكريم</h3>
+          <p class="text-sm text-muted-custom leading-relaxed">
+            لا تجعل انشغالك بالدراسة أو الأعمال يزاحم وردك من القرآن الكريم وأذكار الصباح والمساء وأذكار ما بعد الصلاة؛ ففيها حياة القلب، وانشراح الصدر، والبركة العجيبة في الوقت والفهم.
+          </p>
+        </div>
+
+        <!-- 4. الصلاة على النبي صلى الله عليه وسلم -->
+        <div class="app-surface p-5 rounded-2xl border-r-4 border-primary-accent space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base sm:text-lg font-extrabold text-primary-accent">٤. الصلاة على النبي ﷺ</h3>
+            <button onclick="window.incrementSalawat()" class="px-3.5 py-1.5 rounded-xl bg-primary-soft text-primary-accent text-xs sm:text-sm font-extrabold hover:bg-primary-accent hover:text-white transition">
+              صلِّ على النبي ﷺ (<span id="salawatCounter">0</span>)
+            </button>
+          </div>
+          <p class="text-sm text-muted-custom leading-relaxed">
+            أكثر من الصلاة والسلام على رسول الله صلى الله عليه وسلم؛ فبها تُكفى همّك، ويُغفر ذنبك، وتُقضى حوائجك، ويُفتح عليك في العلم والعمل: <strong>«اللَّهُمَّ صَلِّ وَسَلِّمْ وَبَارِكْ عَلَى نَبِيِّنَا مُحَمَّدٍ»</strong>.
+          </p>
+        </div>
+
+        <!-- 5. حسن الخلق -->
+        <div class="app-surface p-5 rounded-2xl border-r-4 border-purple-500 space-y-2">
+          <h3 class="text-base sm:text-lg font-extrabold text-purple-400">٥. حسن الخلق</h3>
+          <p class="text-sm text-muted-custom leading-relaxed">
+            العلم والنجاح يزدانان بحسن الخلق؛ برّ الوالدين، طلاقة الوجه، الصدق، التواضع، وإعانة المحتاجين وكفّ الأذى، فـ«إن المؤمن ليدرك بحسن خلقه درجة الصائم القائم».
+          </p>
+        </div>
+
+        <!-- 6. الصبر والمجاهدة -->
+        <div class="app-surface p-5 rounded-2xl border-r-4 border-rose-500 space-y-2">
+          <h3 class="text-base sm:text-lg font-extrabold text-rose-400">٦. الصبر والمجاهدة</h3>
+          <p class="text-sm text-muted-custom leading-relaxed">
+            قال تعالى: ﴿وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا﴾. جاهد نفسك على الطاعة، وعلى ترك الكسل والملهيات، واصبر على مشقة التعلّم والبناء؛ فالعاقبة للمتقين الصابرين.
+          </p>
+        </div>
+
+        <!-- 7. تقوى الله -->
+        <div class="app-surface p-5 rounded-2xl border-r-4 border-teal-500 md:col-span-2 space-y-2">
+          <h3 class="text-base sm:text-lg font-extrabold text-teal-400">٧. تقوى الله في السر والعلن</h3>
+          <p class="text-sm text-muted-custom leading-relaxed">
+            تقوى الله ومراقبته في الخلوات والجلَوات هي أعظم مفتاح للفرج والرزق والفتح في العلم والبصيرة: ﴿وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا • وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ﴾، ﴿وَاتَّقُوا اللَّهَ وَيُعَلِّمُكُمُ اللَّهُ﴾.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================
+       MODAL 1: COLORS (BACKGROUND + ACCENT) & FONT STUDIO
+       ========================================================== -->
+  <div id="themeStudioModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="app-surface w-full max-w-xl rounded-3xl p-6 space-y-6 max-h-[92vh] overflow-y-auto border-2 border-primary-accent/40">
+      <div class="flex items-center justify-between border-b app-border pb-3">
+        <h3 class="text-lg font-extrabold">تخصيص لون الخلفية والأيقونات والخط</h3>
+        <button onclick="window.closeThemeModal()" class="p-2 rounded-xl app-elevated">✕</button>
+      </div>
+
+      <!-- SECTION A: FONT FAMILY, SIZE & THICKNESS -->
+      <div class="space-y-3 app-elevated p-4 rounded-2xl">
+        <label class="block text-sm font-extrabold text-primary-accent">١. الخط وحجم الخط وسماكته</label>
+
+        <!-- Font Family Selection -->
+        <div class="grid grid-cols-3 gap-2 text-xs sm:text-sm">
+          <button onclick="window.setAppFont('Readex Pro')" class="p-2.5 rounded-xl app-surface hover:border-primary-accent">خط ريدكس (سميك وواضح)</button>
+          <button onclick="window.setAppFont('Tajawal')" class="p-2.5 rounded-xl app-surface hover:border-primary-accent">خط تجوال (عريض ومريح)</button>
+          <button onclick="window.setAppFont('Cairo')" class="p-2.5 rounded-xl app-surface hover:border-primary-accent">خط القاهرة (هندسي)</button>
+        </div>
+
+        <!-- Font Size Slider -->
+        <div class="pt-2 space-y-1">
+          <div class="flex justify-between text-xs">
+            <span>التحكم بحجم الخط في كامل التطبيق</span>
+            <span id="modalFontSizeVal" class="font-mono font-extrabold text-primary-accent">17px</span>
+          </div>
+          <input id="fontSizeRangeSlider" oninput="window.setAppFontSize(this.value)" type="range" min="14" max="22" step="1" value="17" class="w-full" dir="ltr" />
+          <div class="flex justify-between text-[11px] text-muted-custom">
+            <span>كبير جداً (22)</span>
+            <span>متوسط (17)</span>
+            <span>صغير (14)</span>
+          </div>
+        </div>
+
+        <!-- Extra Boldness Toggle -->
+        <div class="flex items-center justify-between pt-1">
+          <span class="text-xs sm:text-sm">زيادة سماكة كافة النصوص (خط عريض جداً)</span>
+          <button id="boldToggleBtn" onclick="window.toggleExtraBold()" class="px-4 py-1.5 rounded-xl bg-primary-accent text-white text-xs">مفعّل</button>
+        </div>
+      </div>
+
+      <!-- SECTION B: FULL BACKGROUND COLOR CUSTOMIZATION -->
+      <div class="space-y-3 app-elevated p-4 rounded-2xl">
+        <div class="flex items-center justify-between">
+          <label class="text-sm font-extrabold text-primary-accent">٢. تغيير لون خلفية التطبيق بالكامل</label>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-muted-custom">اختر أي لون للخلفية:</span>
+            <input id="bgColorPickerInput" oninput="window.applyCustomBackgroundColor(this.value)" type="color" value="#0B101B" class="w-9 h-9 rounded-lg cursor-pointer bg-transparent border-0" />
+            <input id="bgHexInput" oninput="window.applyCustomBackgroundColor(this.value)" type="text" value="#0B101B" maxlength="7" dir="ltr" class="w-24 app-surface rounded-lg px-2 py-1 font-mono text-xs text-center uppercase" />
+          </div>
+        </div>
+
+        <!-- Curated Background Color Presets -->
+        <div id="bgPaletteGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs"></div>
+
+        <!-- Quick preset mode buttons for compatibility -->
+        <div class="hidden">
+          <button onclick="window.setSurfaceMode('dark')">داكن</button>
+          <button onclick="window.setSurfaceMode('amoled')">AMOLED</button>
+          <button onclick="window.setSurfaceMode('warm')">دافئ</button>
+          <button onclick="window.setSurfaceMode('light')">فاتح</button>
+        </div>
+      </div>
+
+      <!-- SECTION C: ACCENT / ICONS / BUTTONS COLOR -->
+      <div class="space-y-3 app-elevated p-4 rounded-2xl">
+        <div class="flex items-center justify-between">
+          <label class="text-sm font-extrabold text-primary-accent">٣. تغيير لون الأزرار والأيقونات والعناوين</label>
+          <div class="flex items-center gap-2" dir="ltr">
+            <input id="accentColorPickerInput" oninput="window.applyPrimaryColor(this.value)" type="color" value="#458AFF" class="w-9 h-9 rounded-lg cursor-pointer bg-transparent border-0" />
+            <input id="customHexInput" oninput="window.applyHexInput(this.value)" type="text" value="#458AFF" maxlength="7" class="w-24 app-surface rounded-lg px-2 py-1 font-mono text-xs text-center uppercase" />
+          </div>
+        </div>
+
+        <div id="notionPaletteGrid" class="grid grid-cols-5 gap-2"></div>
+
+        <!-- LTR HSL Sliders -->
+        <div class="space-y-2 app-surface p-3 rounded-xl" dir="ltr">
+          <div>
+            <div class="flex justify-between text-[11px] text-muted-custom"><span>Hue</span><span id="hslHueVal">218°</span></div>
+            <input id="hslHueSlider" oninput="window.updateColorFromHSL()" type="range" min="0" max="360" value="218" class="w-full" />
+          </div>
+          <div>
+            <div class="flex justify-between text-[11px] text-muted-custom"><span>Saturation (التشبع)</span><span id="hslSatVal">100%</span></div>
+            <input id="hslSatSlider" oninput="window.updateColorFromHSL()" type="range" min="10" max="100" value="100" class="w-full" />
+          </div>
+          <div>
+            <div class="flex justify-between text-[11px] text-muted-custom"><span>Lightness (الإضاءة والتفتيح)</span><span id="hslLightVal">64%</span></div>
+            <input id="hslLightSlider" oninput="window.updateColorFromHSL()" type="range" min="20" max="85" value="64" class="w-full" />
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-2">
+        <button onclick="window.resetDefaultTheme()" class="text-xs sm:text-sm text-muted-custom underline">استعادة الألوان الافتراضية</button>
+        <button onclick="window.closeThemeModal()" class="btn-primary px-8 py-2.5 rounded-xl text-sm">تم الحفظ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       MODAL 2: BACKUP, WIDGET SETTINGS & ZERO-RESET MODAL
+       ========================================================== -->
+  <div id="backupModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="app-surface w-full max-w-md rounded-3xl p-6 space-y-5 border-2 border-primary-accent/40 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b app-border pb-3">
+        <h3 class="text-base font-extrabold">البيانات وإعدادات الويدجت</h3>
+        <button onclick="window.closeBackupModal()" class="p-1.5 rounded-xl app-elevated">✕</button>
+      </div>
+
+      <!-- Smart Widget Content Selector -->
+      <div class="app-elevated p-4 rounded-2xl space-y-2.5">
+        <label class="block text-xs sm:text-sm font-extrabold text-primary-accent">ماذا تريد أن يعرض ويدجت الشاشة الرئيسية؟</label>
+        <select id="widgetContentSelect" onchange="window.setWidgetSource(this.value)" class="w-full app-surface rounded-xl px-3 py-2.5 text-xs sm:text-sm focus:outline-none">
+          <option value="tasks">مهام اليوم غير المنجزة</option>
+          <option value="hadith">وصية «قلبك» (الحديث الشريف)</option>
+          <option value="notes">أحدث ملاحظة في المكتبة</option>
+        </select>
+        <p class="text-[11px] text-muted-custom">يتم إرسال الاختيار تلقائياً إلى ويدجت الهاتف عند تحويل التطبيق عبر App Factory.</p>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <button onclick="window.exportAllDataJSON()" class="btn-primary py-3 rounded-xl text-xs sm:text-sm">
+          تنزيل نسخة احتياطية (JSON)
+        </button>
+        <label class="w-full py-3 rounded-xl app-elevated hover:border-primary-accent text-xs sm:text-sm text-center cursor-pointer transition">
+          <span>استيراد نسخة احتياطية من جهازك</span>
+          <input type="file" accept=".json" onchange="window.importDataJSON(event)" class="hidden" />
+        </label>
+        <button onclick="window.wipeAllDataClean()" class="w-full py-3 rounded-xl bg-rose-500/15 border border-rose-500/40 text-rose-400 text-xs sm:text-sm">
+          تصفير التطبيق بالكامل وحذف جميع البيانات
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       LOCK SCREEN FOCUS OVERLAY (شاشة قفل التركيز لبومودورو وحاسب الوقت)
+       ========================================================== -->
+  <div id="lockScreenFocusOverlay" class="fixed inset-0 z-50 hidden bg-black text-white flex flex-col items-center justify-between p-6 sm:p-10 select-none">
+    <div class="w-full max-w-xl flex items-center justify-between text-xs sm:text-sm text-slate-400">
+      <span id="lockScreenModeBadge" class="px-3.5 py-1 rounded-full bg-white/10 text-primary-accent font-extrabold">وضع شاشة القفل نشط</span>
+      <button onclick="window.closeLockScreenFocusMode()" class="px-4 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-extrabold transition">
+        إلغاء القفل ✕
+      </button>
+    </div>
+
+    <div class="text-center space-y-4 my-auto">
+      <div id="lockScreenTaskTitle" class="text-base sm:text-xl font-extrabold text-slate-300">جلسة تركيز</div>
+      <div id="lockScreenTimerDisplay" class="font-mono text-6xl sm:text-8xl font-extrabold tracking-wider text-primary-accent" dir="ltr">25:00</div>
+      <div class="pt-4 flex items-center justify-center gap-4">
+        <button onclick="window.toggleActiveTimerFromLock()" id="lockScreenActionBtn" class="btn-primary px-8 py-3.5 rounded-2xl text-sm sm:text-base font-extrabold">
+          تشغيل / إيقاف مؤقت
+        </button>
+      </div>
+    </div>
+
+    <div class="w-full max-w-2xl text-center border-t border-white/10 pt-4">
+      <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+        «واعلَم أنَّ النَّصرَ معَ الصَّبرِ ، وأنَّ الفرجَ معَ الكربِ ، وأنَّ معَ العُسرِ يُسرًا»
+      </p>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       MODAL 3: CUSTOM CONFIRMATION MODAL (رسالة تأكيد قبل الحذف أو التصفير)
+       ========================================================== -->
+  <div id="confirmActionModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="app-surface w-full max-w-sm rounded-3xl p-6 space-y-5 border-2 border-rose-500/50 text-center shadow-2xl">
+      <div class="w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-400 flex items-center justify-center mx-auto">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <div class="space-y-2">
+        <h3 id="confirmModalTitle" class="text-base sm:text-lg font-extrabold">تأكيد الحذف</h3>
+        <p id="confirmModalMessage" class="text-xs sm:text-sm text-muted-custom leading-relaxed">هل أنت متأكد من الحذف؟</p>
+      </div>
+      <div class="flex items-center justify-center gap-3 pt-1">
+        <button id="confirmModalYesBtn" onclick="window.executeConfirmedAction()" class="flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs sm:text-sm font-extrabold transition">
+          نعم، تأكيد الحذف
+        </button>
+        <button onclick="window.closeConfirmModal()" class="flex-1 py-2.5 px-4 rounded-xl app-elevated hover:border-primary-accent text-xs sm:text-sm font-extrabold transition">
+          إلغاء وتراجع
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTERED TOAST CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-8 inset-x-0 z-50 flex flex-col items-center justify-center gap-2.5 pointer-events-none px-4"></div>
+
+  <!-- ==========================================================
+       APPLICATION CORE LOGIC
+       ========================================================== -->
+  <script>
+    (function () {
+      // Fresh storage key so previous demo items never appear
+      var STORAGE_KEY = 'munjiz_clean_v2_state';
+
+      var NOTION_PALETTES = [
+        { name: 'أزرق سماوي', hex: '#458AFF' },
+        { name: 'بنفسجي', hex: '#8B5CF6' },
+        { name: 'زمردي', hex: '#10B981' },
+        { name: 'كهرماني', hex: '#F59E0B' },
+        { name: 'وردي', hex: '#F43F5E' },
+        { name: 'سماوي', hex: '#06B6D4' },
+        { name: 'نيلي', hex: '#6366F1' },
+        { name: 'مرجاني', hex: '#FF6B6B' },
+        { name: 'نعناعي', hex: '#14B8A6' },
+        { name: 'ذهبي', hex: '#EAB308' }
+      ];
+
+      var BG_PALETTES = [
+        { name: 'كحلي ليلي هادئ', hex: '#0B101B' },
+        { name: 'أسود صافي AMOLED', hex: '#000000' },
+        { name: 'أخضر غابي عميق', hex: '#071712' },
+        { name: 'بنفسجي فلكي', hex: '#120D20' },
+        { name: 'بني قهوة دافئ', hex: '#18120E' },
+        { name: 'رمادي داكن مريح', hex: '#18181B' },
+        { name: 'أبيض نهاري ساطع', hex: '#F8FAFC' },
+        { name: 'كريمي ورقي للقراءة', hex: '#FAF6EE' }
+      ];
+
+      var MOTIVATIONAL_QUOTES = [
+        {
+          q: 'استعن بالله ولا تعجز؛ ابدأ خطوتك الأولى الآن وسيتبعك التركيز والهمة.',
+          tip: 'اضبط المؤقت على 25 دقيقة وفرّغ ذهنك لمهمة واحدة فقط.'
+        }
+      ];
+
+      var RESCUE_PROTOCOLS = {
+        sleepy: {
+          title: 'خطوة سريعة لطرد النعاس:',
+          text: 'اشرب كوب ماء الآن، وشغّل تمرين التنفس بالأسفل لمدة دقيقة لتجديد الأكسجين في الدماغ، واغسل وجهك بماء بارد.',
+          btnText: 'ابدأ تمرين التنفس',
+          action: function () { window.startBreathingExercise(); }
+        },
+        procrastinate: {
+          title: 'كسر التسويف بقاعدة الدقيقتين:',
+          text: 'لا تفكر في حجم المهمة كاملة؛ عد نفسك بالعمل لمدة دقيقتين فقط (120 ثانية) لكسر حاجز البداية.',
+          btnText: 'ابدأ دقيقتين فقط',
+          action: function () { window.toggleMicroChallenge(); }
+        },
+        distracted: {
+          title: 'استعادة التركيز وعزل التشتت:',
+          text: 'اختر مهمة واحدة فقط وانتقل إلى المؤقت مع تشغيل صوت المطر الخفيف أو الضوضاء البنية.',
+          btnText: 'انتقل للمؤقت',
+          action: function () { window.switchMainTab('focus'); }
+        },
+        overwhelmed: {
+          title: 'تفكيك تراكم المهام:',
+          text: 'افتح مصفوفة الأولويات في قسم المهام، وابدأ بمهمة واحدة فقط من مربع (عاجل ومهم P1).',
+          btnText: 'افتح مصفوفة الأولويات',
+          action: function () {
+            window.switchMainTab('tasks');
+            window.setTaskLayout('matrix');
+          }
+        }
+      };
+
+      var todayStr = new Date().toISOString().slice(0, 10);
+
+      // 100% ZEROED-OUT CLEAN INITIAL STATE (NO DEMO ITEMS AT ALL)
+      var DEFAULT_STATE = {
+        theme: {
+          primary: '#458AFF',
+          bgHex: '#0B101B',
+          surface: 'dark',
+          fontFamily: 'Readex Pro',
+          fontSize: 17,
+          extraBold: true
+        },
+        xp: 0,
+        streak: 0,
+        hydration: 0,
+        salawat: 0,
+        deskChecks: {
+          eye20: false,
+          stretch: false,
+          coldWater: false,
+          standUp: false
+        },
+        pomoSettings: {
+          work: 25,
+          short: 5,
+          long: 15
+        },
+        tasks: [],
+        habits: [],
+        sessions: [],
+        notes: [],
+        flashcards: []
+      };
+
+      var state = loadState();
+      var currentMainTab = 'tasks';
+      var currentTaskFilter = 'all';
+      var currentTaskLayout = 'list';
+      var currentFocusEngine = 'pomodoro';
+      var linkedTaskId = '';
+      var quoteIndex = 0;
+
+      // Pomodoro runtime
+      var pomoPhase = 'work';
+      var pomoRemainingSec = (state.pomoSettings.work || 25) * 60;
+      var pomoTotalSec = pomoRemainingSec;
+      var pomoRunning = false;
+      var pomoInterval = null;
+      var pomoRound = 1;
+
+      // Stopwatch runtime
+      var swRunning = false;
+      var swStartTime = 0;
+      var swElapsedMs = 0;
+      var swInterval = null;
+      var swLaps = [];
+
+      // Breathing runtime
+      var breathRunning = false;
+      var breathInterval = null;
+
+      // 2-Minute Challenge runtime
+      var microRunning = false;
+      var microSec = 120;
+      var microInterval = null;
+
+      // Web Audio API
+      var audioCtx = null;
+      var ambientNode = null;
+      var ambientGain = null;
+
+      function loadState() {
+        var raw = window.__safeStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          try {
+            var parsed = JSON.parse(raw);
+            var merged = Object.assign({}, JSON.parse(JSON.stringify(DEFAULT_STATE)), parsed);
+            merged.theme = Object.assign({}, DEFAULT_STATE.theme, parsed.theme || {});
+            return merged;
+          } catch (e) {}
+        }
+        return JSON.parse(JSON.stringify(DEFAULT_STATE));
+      }
+
+      var wakeLockSentinel = null;
+
+      function syncAndroidWidget() {
+        try {
+          var src = (state.widgetSource || 'tasks');
+          var wTitle = 'مُنجز - مهام اليوم';
+          var wBody = '';
+          if (src === 'hadith') {
+            wTitle = 'مُنجز - قلبك';
+            wBody = 'واعلَم أنَّ ما أصابَكَ لم يكُن ليُخطِئَك وما أخطأكَ لم يكُن ليُصيبَكَ ، واعلَم أنَّ النَّصرَ معَ الصَّبرِ ، وأنَّ الفرجَ معَ الكربِ ، وأنَّ معَ العُسرِ يُسرًا';
+          } else if (src === 'notes') {
+            wTitle = 'مُنجز - ملاحظة مثبتة';
+            var pinned = state.notes.find(function (n) { return n.id === state.pinnedWidgetNoteId; }) || state.notes[0];
+            wBody = pinned ? (pinned.title + ': ' + pinned.body) : 'لا توجد ملاحظات حالياً';
+          } else {
+            var pending = state.tasks.filter(function (t) { return !t.completed; });
+            wBody = pending.length
+              ? pending.slice(0, 4).map(function (t) { return '• ' + t.title; }).join('\n')
+              : 'لا توجد مهام متبقية اليوم';
+          }
+          var payload = JSON.stringify({
+            title: wTitle,
+            body: wBody,
+            primaryColor: state.theme.primary || '#458AFF',
+            bgColor: state.theme.bgHex || '#0B101B'
+          });
+          window.__safeStorage.setItem('munjiz_widget_payload', payload);
+          if (window.AndroidBridge && typeof window.AndroidBridge.updateWidget === 'function') {
+            window.AndroidBridge.updateWidget(payload);
+          }
+        } catch (e) {}
+      }
+
+      window.setWidgetSource = function (src) {
+        state.widgetSource = src;
+        var sel = document.getElementById('widgetContentSelect');
+        if (sel && sel.value !== src) sel.value = src;
+        saveState();
+        window.showToast('تم تحديث محتوى الويدجت بنجاح', 'success');
+      };
+
+      window.pinNoteToWidget = function (noteId) {
+        state.widgetSource = 'notes';
+        state.pinnedWidgetNoteId = noteId;
+        var sel = document.getElementById('widgetContentSelect');
+        if (sel) sel.value = 'notes';
+        saveState();
+        window.showToast('تم تثبيت هذه الملاحظة للظهور في الويدجت', 'success');
+      };
+
+      function syncLockScreenTimerUI(modeTitle, timeStr, isRunning) {
+        var lockDisp = document.getElementById('lockScreenTimerDisplay');
+        if (lockDisp) lockDisp.textContent = timeStr;
+        var lockBadge = document.getElementById('lockScreenModeBadge');
+        if (lockBadge) lockBadge.textContent = modeTitle + (isRunning ? ' (يعمل الآن)' : ' (متوقف)');
+        var taskObj = state.tasks.find(function (t) { return t.id === linkedTaskId; });
+        var taskName = taskObj ? taskObj.title : 'جلسة تركيز ومذاكرة';
+        var lockTask = document.getElementById('lockScreenTaskTitle');
+        if (lockTask) lockTask.textContent = taskName;
+
+        try {
+          if (window.AndroidBridge && typeof window.AndroidBridge.updateTimerNotification === 'function') {
+            window.AndroidBridge.updateTimerNotification(modeTitle, timeStr, taskName, Boolean(isRunning));
+          }
+          if ('mediaSession' in navigator && window.MediaMetadata) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+              title: timeStr + ' — ' + modeTitle,
+              artist: taskName,
+              album: 'تطبيق مُنجز'
+            });
+          }
+        } catch (e) {}
+      }
+
+      window.openLockScreenFocusMode = function () {
+        var ov = document.getElementById('lockScreenFocusOverlay');
+        if (ov) ov.classList.remove('hidden');
+        if (currentFocusEngine === 'pomodoro') {
+          syncLockScreenTimerUI('بومودورو', formatMMSS(pomoRemainingSec), pomoRunning);
+        } else {
+          var parts = formatStopwatchParts(swElapsedMs);
+          syncLockScreenTimerUI('حاسب الجلسة', parts.h + ':' + parts.m + ':' + parts.s, swRunning);
+        }
+        try {
+          if (navigator.wakeLock && navigator.wakeLock.request) {
+            navigator.wakeLock.request('screen').then(function (sentinel) {
+              wakeLockSentinel = sentinel;
+            }).catch(function () {});
+          }
+        } catch (e) {}
+      };
+
+      window.closeLockScreenFocusMode = function () {
+        var ov = document.getElementById('lockScreenFocusOverlay');
+        if (ov) ov.classList.add('hidden');
+        try {
+          if (wakeLockSentinel) {
+            wakeLockSentinel.release();
+            wakeLockSentinel = null;
+          }
+        } catch (e) {}
+      };
+
+      window.toggleActiveTimerFromLock = function () {
+        if (currentFocusEngine === 'pomodoro') {
+          window.togglePomodoro();
+        } else {
+          window.toggleStopwatch();
+        }
+      };
+
+      function saveState() {
+        window.__safeStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        updateHeaderAndStats();
+        syncAndroidWidget();
+      }
+
+      var pendingConfirmCallback = null;
+
+      window.askConfirmation = function (title, message, onConfirm) {
+        pendingConfirmCallback = onConfirm;
+        var tEl = document.getElementById('confirmModalTitle');
+        var mEl = document.getElementById('confirmModalMessage');
+        var modal = document.getElementById('confirmActionModal');
+        if (tEl) tEl.textContent = title || 'تأكيد الحذف';
+        if (mEl) mEl.textContent = message || 'هل أنت متأكد من رغبتك في المتابعة؟';
+        if (modal) modal.classList.remove('hidden');
+      };
+
+      window.closeConfirmModal = function () {
+        pendingConfirmCallback = null;
+        var modal = document.getElementById('confirmActionModal');
+        if (modal) modal.classList.add('hidden');
+      };
+
+      window.executeConfirmedAction = function () {
+        var fn = pendingConfirmCallback;
+        window.closeConfirmModal();
+        if (typeof fn === 'function') fn();
+      };
+
+      window.showToast = function (message, type) {
+        var container = document.getElementById('toastContainer');
+        if (!container) return;
+        var el = document.createElement('div');
+        var borderCol = type === 'error' ? 'border-rose-500' : (type === 'warning' ? 'border-amber-500' : 'border-primary-accent');
+        el.className = 'app-surface px-6 py-3.5 rounded-2xl shadow-2xl border-2 ' + borderCol + ' text-xs sm:text-sm font-extrabold flex items-center justify-center text-center gap-2 pointer-events-auto transition-all duration-300 max-w-md mx-auto';
+        el.textContent = message;
+        container.appendChild(el);
+        setTimeout(function () {
+          el.style.opacity = '0';
+          setTimeout(function () {
+            if (el.parentNode) el.parentNode.removeChild(el);
+          }, 300);
+        }, 2600);
+      };
+
+      function playChime(freq1, freq2) {
+        try {
+          var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return;
+          if (!audioCtx) audioCtx = new AudioContextClass();
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          var osc = audioCtx.createOscillator();
+          var gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq1 || 523.25, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(freq2 || 783.99, audioCtx.currentTime + 0.35);
+          gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.52);
+        } catch (e) {}
+      }
+
+      // ==========================================
+      // FONT, BACKGROUND COLOR & ACCENT COLOR ENGINE
+      // ==========================================
+      function hexToRgb(hex) {
+        var clean = String(hex || '').replace('#', '').trim();
+        if (clean.length === 3) {
+          clean = clean[0] + clean[0] + clean[1] + clean[1] + clean[2] + clean[2];
+        }
+        var num = parseInt(clean, 16);
+        if (isNaN(num)) return { r: 69, g: 138, b: 255 };
+        return {
+          r: (num >> 16) & 255,
+          g: (num >> 8) & 255,
+          b: num & 255
+        };
+      }
+
+      function rgbToHex(r, g, b) {
+        function c(v) {
+          return Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0');
+        }
+        return ('#' + c(r) + c(g) + c(b)).toUpperCase();
+      }
+
+      function hslToHex(h, s, l) {
+        l /= 100;
+        var a = s * Math.min(l, 1 - l) / 100;
+        function f(n) {
+          var k = (n + h / 30) % 12;
+          var color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+          return Math.round(255 * color).toString(16).padStart(2, '0');
+        }
+        return ('#' + f(0) + f(8) + f(4)).toUpperCase();
+      }
+
+      // Apply any custom background color & automatically compute card surfaces and readable text contrast
+      window.applyCustomBackgroundColor = function (hex) {
+        var clean = String(hex || '').trim();
+        if (!clean.startsWith('#')) clean = '#' + clean;
+        if (!/^#[0-9A-Fa-f]{6}$/.test(clean)) return;
+
+        state.theme.bgHex = clean.toUpperCase();
+        var rgb = hexToRgb(clean);
+        // Calculate relative luminance to know if background is light or dark
+        var luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+        var isLight = luminance > 0.55;
+
+        var surfaceHex, elevatedHex, borderCol, textMain, textMuted;
+        if (isLight) {
+          surfaceHex = rgbToHex(Math.min(255, rgb.r + 12), Math.min(255, rgb.g + 12), Math.min(255, rgb.b + 12));
+          elevatedHex = rgbToHex(Math.max(0, rgb.r - 14), Math.max(0, rgb.g - 14), Math.max(0, rgb.b - 14));
+          borderCol = 'rgba(15, 23, 42, 0.14)';
+          textMain = '#0F172A';
+          textMuted = '#334155';
+        } else {
+          surfaceHex = rgbToHex(Math.min(255, rgb.r + 14), Math.min(255, rgb.g + 16), Math.min(255, rgb.b + 22));
+          elevatedHex = rgbToHex(Math.min(255, rgb.r + 26), Math.min(255, rgb.g + 30), Math.min(255, rgb.b + 40));
+          borderCol = 'rgba(255, 255, 255, 0.12)';
+          textMain = '#FFFFFF';
+          textMuted = '#CBD5E1';
+        }
+
+        var root = document.documentElement;
+        root.style.setProperty('--bg-main', state.theme.bgHex);
+        root.style.setProperty('--bg-surface', surfaceHex);
+        root.style.setProperty('--bg-elevated', elevatedHex);
+        root.style.setProperty('--border-color', borderCol);
+        root.style.setProperty('--text-main', textMain);
+        root.style.setProperty('--text-muted', textMuted);
+
+        var bgPicker = document.getElementById('bgColorPickerInput');
+        if (bgPicker && document.activeElement !== bgPicker) bgPicker.value = state.theme.bgHex;
+        var bgHexInp = document.getElementById('bgHexInput');
+        if (bgHexInp && document.activeElement !== bgHexInp) bgHexInp.value = state.theme.bgHex;
+
+        renderBgPalettes();
+        saveState();
+      };
+
+      window.setSurfaceMode = function (mode) {
+        state.theme.surface = mode;
+        var map = {
+          dark: '#0B101B',
+          amoled: '#000000',
+          warm: '#18120E',
+          light: '#F8FAFC'
+        };
+        window.applyCustomBackgroundColor(map[mode] || '#0B101B');
+      };
+
+      function hexToHsl(hex) {
+        var rgb = hexToRgb(hex);
+        var r = rgb.r / 255;
+        var g = rgb.g / 255;
+        var b = rgb.b / 255;
+        var max = Math.max(r, g, b), min = Math.min(r, g, b);
+        var h = 0, s = 0, l = (max + min) / 2;
+        if (max !== min) {
+          var d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+          }
+          h /= 6;
+        }
+        return {
+          h: Math.round(h * 360),
+          s: Math.round(s * 100),
+          l: Math.round(l * 100)
+        };
+      }
+
+      window.applyPrimaryColor = function (hex, fromHslSlider) {
+        var clean = String(hex || '').trim();
+        if (!clean.startsWith('#')) clean = '#' + clean;
+        if (!/^#[0-9A-Fa-f]{6}$/.test(clean)) return;
+        state.theme.primary = clean.toUpperCase();
+        var rgb = hexToRgb(clean);
+        var root = document.documentElement;
+        root.style.setProperty('--primary', state.theme.primary);
+        root.style.setProperty('--primary-rgb', rgb.r + ', ' + rgb.g + ', ' + rgb.b);
+        root.style.setProperty('--primary-soft', 'rgba(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ', 0.16)');
+        root.style.setProperty('--primary-glow', 'rgba(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ', 0.34)');
+
+        var hexInput = document.getElementById('customHexInput');
+        if (hexInput && document.activeElement !== hexInput) hexInput.value = state.theme.primary;
+        var picker = document.getElementById('accentColorPickerInput');
+        if (picker && document.activeElement !== picker) picker.value = state.theme.primary;
+
+        if (!fromHslSlider) {
+          var hsl = hexToHsl(state.theme.primary);
+          var hSlider = document.getElementById('hslHueSlider');
+          var sSlider = document.getElementById('hslSatSlider');
+          var lSlider = document.getElementById('hslLightSlider');
+          if (hSlider) hSlider.value = hsl.h;
+          if (sSlider) sSlider.value = Math.max(10, Math.min(100, hsl.s));
+          if (lSlider) lSlider.value = Math.max(20, Math.min(85, hsl.l));
+          var hVal = document.getElementById('hslHueVal');
+          var sVal = document.getElementById('hslSatVal');
+          var lVal = document.getElementById('hslLightVal');
+          if (hVal) hVal.textContent = hsl.h + '°';
+          if (sVal) sVal.textContent = hsl.s + '%';
+          if (lVal) lVal.textContent = hsl.l + '%';
+        }
+
+        renderNotionPalettes();
+        saveState();
+      };
+
+      window.applyHexInput = function (val) {
+        var clean = String(val || '').trim();
+        if (!clean.startsWith('#')) clean = '#' + clean;
+        if (/^#[0-9A-Fa-f]{6}$/.test(clean)) {
+          window.applyPrimaryColor(clean, false);
+        }
+      };
+
+      window.updateColorFromHSL = function () {
+        var hRaw = parseInt(document.getElementById('hslHueSlider').value, 10);
+        var sRaw = parseInt(document.getElementById('hslSatSlider').value, 10);
+        var lRaw = parseInt(document.getElementById('hslLightSlider').value, 10);
+        var h = isNaN(hRaw) ? 218 : hRaw;
+        var s = isNaN(sRaw) ? 100 : sRaw;
+        var l = isNaN(lRaw) ? 64 : lRaw;
+        document.getElementById('hslHueVal').textContent = h + '°';
+        document.getElementById('hslSatVal').textContent = s + '%';
+        document.getElementById('hslLightVal').textContent = l + '%';
+        var hex = hslToHex(h, s, l);
+        window.applyPrimaryColor(hex, true);
+      };
+
+      // Font Family, Size & Weight Controls
+      window.setAppFont = function (fontName) {
+        state.theme.fontFamily = fontName;
+        document.documentElement.style.setProperty('--app-font', "'" + fontName + "', 'Tajawal', 'Cairo', sans-serif");
+        saveState();
+        window.showToast('تم تغيير الخط إلى: ' + fontName, 'success');
+      };
+
+      window.setAppFontSize = function (pxVal) {
+        var size = Math.max(14, Math.min(22, parseInt(pxVal, 10) || 17));
+        state.theme.fontSize = size;
+        document.documentElement.style.fontSize = size + 'px';
+        var pct = Math.round((size / 17) * 100);
+        var hdrLbl = document.getElementById('headerFontSizeLabel');
+        if (hdrLbl) hdrLbl.textContent = pct + '%';
+        var modLbl = document.getElementById('modalFontSizeVal');
+        if (modLbl) modLbl.textContent = size + 'px (' + pct + '%)';
+        var slider = document.getElementById('fontSizeRangeSlider');
+        if (slider && document.activeElement !== slider) slider.value = size;
+        saveState();
+      };
+
+      window.StepFontSize = function (delta) {
+        var current = state.theme.fontSize || 17;
+        window.setAppFontSize(current + delta);
+      };
+
+      window.toggleExtraBold = function () {
+        state.theme.extraBold = !state.theme.extraBold;
+        applyFontWeight();
+        saveState();
+      };
+
+      function applyFontWeight() {
+        var w = state.theme.extraBold ? '700' : '500';
+        document.documentElement.style.setProperty('--base-weight', w);
+        var btn = document.getElementById('boldToggleBtn');
+        if (btn) {
+          btn.textContent = state.theme.extraBold ? 'مفعّل (سميك)' : 'عادي';
+          btn.className = state.theme.extraBold
+            ? 'px-4 py-1.5 rounded-xl bg-primary-accent text-white text-xs'
+            : 'px-4 py-1.5 rounded-xl app-surface text-muted-custom text-xs';
+        }
+      }
+
+      window.resetDefaultTheme = function () {
+        window.applyPrimaryColor('#458AFF');
+        window.applyCustomBackgroundColor('#0B101B');
+        window.setAppFont('Readex Pro');
+        window.setAppFontSize(17);
+        state.theme.extraBold = true;
+        applyFontWeight();
+        window.showToast('تمت استعادة المظهر الافتراضي', 'success');
+      };
+
+      function renderBgPalettes() {
+        var grid = document.getElementById('bgPaletteGrid');
+        if (!grid) return;
+        grid.innerHTML = BG_PALETTES.map(function (p) {
+          var isSel = (state.theme.bgHex || '#0B101B').toUpperCase() === p.hex.toUpperCase();
+          return (
+            '<button onclick="window.applyCustomBackgroundColor(\'' + p.hex + '\')" class="p-2.5 rounded-xl app-surface flex items-center gap-2 border ' +
+            (isSel ? 'border-primary-accent' : 'border-transparent') + ' transition">' +
+            '<span class="w-5 h-5 rounded-full border border-slate-500 shrink-0" style="background-color:' + p.hex + '"></span>' +
+            '<span class="text-xs truncate">' + p.name + '</span>' +
+            '</button>'
+          );
+        }).join('');
+      }
+
+      function renderNotionPalettes() {
+        var grid = document.getElementById('notionPaletteGrid');
+        if (!grid) return;
+        grid.innerHTML = NOTION_PALETTES.map(function (p) {
+          var isSel = state.theme.primary.toUpperCase() === p.hex.toUpperCase();
+          return (
+            '<button onclick="window.applyPrimaryColor(\'' + p.hex + '\')" class="p-2 rounded-xl app-surface flex flex-col items-center gap-1 border ' +
+            (isSel ? 'border-white scale-105' : 'border-transparent') + ' transition">' +
+            '<span class="w-6 h-6 rounded-full shadow" style="background-color:' + p.hex + '"></span>' +
+            '<span class="text-[11px] truncate w-full text-center">' + p.name + '</span>' +
+            '</button>'
+          );
+        }).join('');
+      }
+
+      window.openThemeModal = function () {
+        renderBgPalettes();
+        renderNotionPalettes();
+        document.getElementById('themeStudioModal').classList.remove('hidden');
+      };
+      window.closeThemeModal = function () {
+        document.getElementById('themeStudioModal').classList.add('hidden');
+      };
+      window.openBackupModal = function () {
+        document.getElementById('backupModal').classList.remove('hidden');
+      };
+      window.closeBackupModal = function () {
+        document.getElementById('backupModal').classList.add('hidden');
+      };
+
+      // Wipe all data clean with confirmation
+      window.wipeAllDataClean = function () {
+        window.askConfirmation(
+          'تأكيد تصفير التطبيق بالكامل',
+          'هل أنت متأكد من حذف جميع المهام والعادات والملاحظات والبيانات؟ لا يمكن التراجع عن هذه الخطوة.',
+          function () {
+            var currentTheme = Object.assign({}, state.theme);
+            state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+            state.theme = currentTheme;
+            saveState();
+            window.renderTasks();
+            renderFocusSessionsLog();
+            renderHabitsTable();
+            renderEnergyHub();
+            renderLibraryAll();
+            updateSalawatUI();
+            window.closeBackupModal();
+            window.showToast('تم تصفير التطبيق بالكامل بنجاح', 'success');
+          }
+        );
+      };
+
+      // ==========================================
+      // MAIN TAB NAVIGATION (6 TABS INCLUDING "قلبك")
+      // ==========================================
+      window.switchMainTab = function (tabId) {
+        currentMainTab = tabId;
+        var tabs = ['tasks', 'focus', 'habits', 'energy', 'library', 'heart'];
+        tabs.forEach(function (t) {
+          var sec = document.getElementById('section_' + t);
+          var btn = document.getElementById('navTab_' + t);
+          if (sec) {
+            if (t === tabId) sec.classList.remove('hidden');
+            else sec.classList.add('hidden');
+          }
+          if (btn) {
+            if (t === tabId) btn.classList.add('active');
+            else btn.classList.remove('active');
+          }
+        });
+        if (tabId === 'tasks') window.renderTasks();
+        if (tabId === 'focus') {
+          populateLinkedTasksDropdown();
+          renderFocusSessionsLog();
+        }
+        if (tabId === 'habits') renderHabitsTable();
+        if (tabId === 'energy') renderEnergyHub();
+        if (tabId === 'library') renderLibraryAll();
+        if (tabId === 'heart') updateSalawatUI();
+      };
+
+      // Salawat Counter in "قلبك"
+      window.incrementSalawat = function () {
+        state.salawat = (state.salawat || 0) + 1;
+        saveState();
+        updateSalawatUI();
+        playChime(523.25, 659.25);
+      };
+
+      function updateSalawatUI() {
+        var el = document.getElementById('salawatCounter');
+        if (el) el.textContent = state.salawat || 0;
+      }
+
+      // ==========================================
+      // STATS UPDATER
+      // ==========================================
+      function updateHeaderAndStats() {
+        var pendingCount = state.tasks.filter(function (t) { return !t.completed; }).length;
+        var completedCount = state.tasks.filter(function (t) { return t.completed; }).length;
+        var totalTasks = state.tasks.length;
+        var pct = totalTasks > 0 ? Math.round((completedCount / totalTasks) * 100) : 0;
+
+        var badge = document.getElementById('navBadgeTasks');
+        if (badge) badge.textContent = pendingCount;
+
+        var pctEl = document.getElementById('dailyCompletionPercent');
+        if (pctEl) pctEl.textContent = pct + '%';
+        var barEl = document.getElementById('dailyProgressBar');
+        if (barEl) barEl.style.width = pct + '%';
+
+        var totalMin = state.sessions.reduce(function (acc, s) { return acc + (Number(s.durationMin) || 0); }, 0);
+        var totalMinBadge = document.getElementById('totalFocusMinutesBadge');
+        if (totalMinBadge) totalMinBadge.textContent = totalMin + ' دقيقة';
+
+        var statCompleted = document.getElementById('statCompletedTasks');
+        if (statCompleted) statCompleted.textContent = completedCount;
+        var statHours = document.getElementById('statTotalHours');
+        if (statHours) statHours.textContent = (totalMin / 60).toFixed(1) + ' س';
+        var statXP = document.getElementById('statTotalXP');
+        if (statXP) statXP.textContent = state.xp || 0;
+      }
+
+      // ==========================================
+      // TAB 1: TASKS & EISENHOWER MATRIX
+      // ==========================================
+      window.toggleTaskAdvancedForm = function () {
+        var dr = document.getElementById('taskAdvancedDrawer');
+        if (dr) dr.classList.toggle('hidden');
+      };
+
+      window.setTaskFilter = function (f) {
+        currentTaskFilter = f;
+        var btns = document.querySelectorAll('.task-filter-btn');
+        btns.forEach(function (b) {
+          if (b.getAttribute('data-filter') === f) {
+            b.className = 'task-filter-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm bg-primary-accent text-white';
+          } else {
+            b.className = 'task-filter-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm app-surface';
+          }
+        });
+        window.renderTasks();
+      };
+
+      window.setTaskLayout = function (layout) {
+        currentTaskLayout = layout;
+        ['list', 'matrix', 'kanban'].forEach(function (l) {
+          var b = document.getElementById('viewBtn_' + l);
+          if (b) {
+            b.className = (l === layout)
+              ? 'px-2.5 py-1 rounded-lg bg-primary-accent text-white'
+              : 'px-2.5 py-1 rounded-lg text-muted-custom';
+          }
+        });
+        window.renderTasks();
+      };
+
+      window.addTask = function () {
+        var titleInput = document.getElementById('newTaskTitle');
+        var title = (titleInput.value || '').trim();
+        if (!title) {
+          window.showToast('اكتب عنوان المهمة أولاً', 'warning');
+          titleInput.focus();
+          return;
+        }
+        var cat = document.getElementById('newTaskCategory').value || 'study';
+        var prio = parseInt(document.getElementById('newTaskPriority').value, 10) || 2;
+        var due = document.getElementById('newTaskDate').value || todayStr;
+        var est = parseInt(document.getElementById('newTaskEstimate').value, 10) || 25;
+        var rep = document.getElementById('newTaskRepeat').value || 'none';
+        var subRaw = (document.getElementById('newTaskSubtasks').value || '').trim();
+        var notes = (document.getElementById('newTaskNotes').value || '').trim();
+
+        var subtasks = subRaw
+          ? subRaw.split('\n').map(function (s) { return s.trim(); }).filter(Boolean).map(function (s) { return { title: s, done: false }; })
+          : [];
+
+        state.tasks.unshift({
+          id: 't_' + Date.now(),
+          title: title,
+          category: cat,
+          priority: prio,
+          dueDate: due,
+          estimate: est,
+          spentMinutes: 0,
+          repeat: rep,
+          completed: false,
+          notes: notes,
+          subtasks: subtasks
+        });
+
+        state.xp = (state.xp || 0) + 10;
+        titleInput.value = '';
+        document.getElementById('newTaskSubtasks').value = '';
+        document.getElementById('newTaskNotes').value = '';
+        saveState();
+        window.renderTasks();
+        window.showToast('تمت إضافة المهمة', 'success');
+      };
+
+      window.toggleTaskComplete = function (taskId) {
+        var task = state.tasks.find(function (t) { return t.id === taskId; });
+        if (!task) return;
+        task.completed = !task.completed;
+        if (task.completed) {
+          state.xp = (state.xp || 0) + 25;
+          playChime(587.33, 880);
+          window.showToast('أحسنت! تم إنجاز المهمة', 'success');
+        }
+        saveState();
+        window.renderTasks();
+      };
+
+      window.toggleSubtask = function (taskId, subIdx) {
+        var task = state.tasks.find(function (t) { return t.id === taskId; });
+        if (!task || !task.subtasks || !task.subtasks[subIdx]) return;
+        task.subtasks[subIdx].done = !task.subtasks[subIdx].done;
+        saveState();
+        window.renderTasks();
+      };
+
+      window.deleteTask = function (taskId) {
+        window.askConfirmation(
+          'تأكيد حذف المهمة',
+          'هل أنت متأكد من رغبتك في حذف هذه المهمة؟',
+          function () {
+            state.tasks = state.tasks.filter(function (t) { return t.id !== taskId; });
+            saveState();
+            window.renderTasks();
+            window.showToast('تم حذف المهمة', 'warning');
+          }
+        );
+      };
+
+      window.startFocusOnTask = function (taskId) {
+        linkedTaskId = taskId;
+        window.switchMainTab('focus');
+        var sel = document.getElementById('focusLinkedTaskSelect');
+        if (sel) sel.value = taskId;
+        window.showToast('تم ربط المؤقت بالمهمة', 'success');
+      };
+
+      function getCategoryLabel(cat) {
+        if (cat === 'study') return 'الدراسة';
+        if (cat === 'work') return 'العمل';
+        return 'شخصي';
+      }
+
+      function getPriorityBadge(p) {
+        if (p === 1) return '<span class="px-2.5 py-0.5 rounded-lg text-xs bg-rose-500/20 text-rose-400">عاجل ومهم</span>';
+        if (p === 2) return '<span class="px-2.5 py-0.5 rounded-lg text-xs bg-amber-500/20 text-amber-400">مهم</span>';
+        if (p === 3) return '<span class="px-2.5 py-0.5 rounded-lg text-xs bg-blue-500/20 text-blue-400">متوسط</span>';
+        return '<span class="px-2.5 py-0.5 rounded-lg text-xs app-elevated text-muted-custom">عادي</span>';
+      }
+
+      function renderTaskCardHTML(t) {
+        var subTotal = (t.subtasks || []).length;
+        var subDone = (t.subtasks || []).filter(function (s) { return s.done; }).length;
+        var subHtml = '';
+        if (subTotal > 0) {
+          var subItems = t.subtasks.map(function (s, idx) {
+            return (
+              '<label class="flex items-center gap-2 text-xs sm:text-sm cursor-pointer py-1 ' + (s.done ? 'line-through opacity-60' : '') + '">' +
+              '<input type="checkbox" ' + (s.done ? 'checked' : '') + ' onchange="window.toggleSubtask(\'' + t.id + '\',' + idx + ')" class="w-4 h-4 rounded accent-blue-500" />' +
+              '<span>' + escapeHtml(s.title) + '</span>' +
+              '</label>'
+            );
+          }).join('');
+          subHtml =
+            '<div class="mt-3 pt-2 border-t app-border space-y-1">' +
+            '<div class="text-xs text-muted-custom">الخطوات (' + subDone + '/' + subTotal + '):</div>' +
+            subItems +
+            '</div>';
+        }
+
+        return (
+          '<div class="app-surface rounded-2xl p-4 priority-' + (t.priority || 4) + ' transition">' +
+            '<div class="flex items-start justify-between gap-3">' +
+              '<div class="flex items-start gap-3 flex-1">' +
+                '<button onclick="window.toggleTaskComplete(\'' + t.id + '\')" class="mt-1 w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 transition ' +
+                  (t.completed ? 'bg-primary-accent border-primary-accent text-white' : 'border-slate-400 hover:border-primary-accent') + '">' +
+                  (t.completed ? '✓' : '') +
+                '</button>' +
+                '<div class="flex-1 space-y-1">' +
+                  '<div class="flex flex-wrap items-center gap-2">' +
+                    '<h4 class="text-base font-extrabold ' + (t.completed ? 'line-through opacity-50' : '') + '">' + escapeHtml(t.title) + '</h4>' +
+                    getPriorityBadge(t.priority) +
+                    '<span class="px-2.5 py-0.5 rounded-lg text-xs app-elevated text-muted-custom">' + getCategoryLabel(t.category) + '</span>' +
+                  '</div>' +
+                  (t.notes ? '<p class="text-xs sm:text-sm text-muted-custom">' + escapeHtml(t.notes) + '</p>' : '') +
+                  '<div class="flex flex-wrap items-center gap-3 text-xs text-muted-custom pt-1">' +
+                    '<span>التاريخ: ' + escapeHtml(t.dueDate || todayStr) + '</span>' +
+                    '<span>المقدر: ' + (t.estimate || 25) + ' د</span>' +
+                    (t.spentMinutes ? '<span class="text-emerald-400">التركيز الفعلي: ' + t.spentMinutes + ' د</span>' : '') +
+                  '</div>' +
+                  subHtml +
+                '</div>' +
+              '</div>' +
+              '<div class="flex items-center gap-2 shrink-0">' +
+                (!t.completed ? (
+                  '<button onclick="window.startFocusOnTask(\'' + t.id + '\')" class="px-3 py-1.5 rounded-xl bg-primary-soft text-primary-accent hover:bg-primary-accent hover:text-white text-xs sm:text-sm transition">' +
+                    'بدء مؤقت' +
+                  '</button>'
+                ) : '') +
+                '<button onclick="window.deleteTask(\'' + t.id + '\')" class="p-2 rounded-xl app-elevated text-muted-custom hover:text-rose-400 transition" title="حذف">' +
+                  '✕' +
+                '</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      window.renderTasks = function () {
+        var container = document.getElementById('tasksContainer');
+        if (!container) return;
+        var q = ((document.getElementById('taskSearchInput') || {}).value || '').trim().toLowerCase();
+
+        var filtered = state.tasks.filter(function (t) {
+          if (currentTaskFilter === 'completed' && !t.completed) return false;
+          if (currentTaskFilter !== 'completed' && currentTaskFilter !== 'all') {
+            if (currentTaskFilter === 'today') {
+              if (t.dueDate !== todayStr || t.completed) return false;
+            } else if (t.category !== currentTaskFilter) {
+              return false;
+            }
+          }
+          if (q) {
+            var hay = (t.title + ' ' + (t.notes || '')).toLowerCase();
+            if (hay.indexOf(q) === -1) return false;
+          }
+          return true;
+        });
+
+        filtered.sort(function (a, b) {
+          if (a.completed !== b.completed) return a.completed ? 1 : -1;
+          return (a.priority || 4) - (b.priority || 4);
+        });
+
+        if (currentTaskLayout === 'list') {
+          if (filtered.length === 0) {
+            container.innerHTML =
+              '<div class="app-surface rounded-2xl p-10 text-center space-y-2">' +
+                '<div class="text-base font-extrabold">القائمة فارغة حالياً</div>' +
+                '<p class="text-xs sm:text-sm text-muted-custom">اكتب أول مهمة لك في المربع العلوي واضغط على زر الإضافة.</p>' +
+              '</div>';
+            return;
+          }
+          container.innerHTML = '<div class="space-y-3">' + filtered.map(renderTaskCardHTML).join('') + '</div>';
+        } else if (currentTaskLayout === 'matrix') {
+          var q1 = filtered.filter(function (t) { return t.priority === 1 && !t.completed; });
+          var q2 = filtered.filter(function (t) { return t.priority === 2 && !t.completed; });
+          var q3 = filtered.filter(function (t) { return t.priority === 3 && !t.completed; });
+          var q4 = filtered.filter(function (t) { return (!t.priority || t.priority === 4) && !t.completed; });
+
+          function renderQuad(title, badgeCol, list) {
+            return (
+              '<div class="app-surface rounded-2xl p-4 space-y-3 border-t-4 ' + badgeCol + '">' +
+                '<div class="flex items-center justify-between">' +
+                  '<h4 class="text-sm sm:text-base font-extrabold">' + title + '</h4>' +
+                  '<span class="px-2.5 py-0.5 rounded-full text-xs app-elevated">' + list.length + '</span>' +
+                '</div>' +
+                '<div class="space-y-2.5">' +
+                  (list.length ? list.map(renderTaskCardHTML).join('') : '<p class="text-xs text-muted-custom py-4 text-center">فارغ</p>') +
+                '</div>' +
+              '</div>'
+            );
+          }
+
+          container.innerHTML =
+            '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">' +
+              renderQuad('عاجل ومهم (أنجزه فوراً)', 'border-rose-500', q1) +
+              renderQuad('مهم وغير عاجل (خطط له)', 'border-amber-500', q2) +
+              renderQuad('عاجل وغير مهم', 'border-blue-500', q3) +
+              renderQuad('عادي / روتيني', 'border-slate-500', q4) +
+            '</div>';
+        } else {
+          var studyTasks = filtered.filter(function (t) { return t.category === 'study'; });
+          var workTasks = filtered.filter(function (t) { return t.category === 'work'; });
+          var personalTasks = filtered.filter(function (t) { return t.category === 'personal'; });
+
+          function renderCol(title, list) {
+            return (
+              '<div class="app-surface rounded-2xl p-4 space-y-3">' +
+                '<div class="flex items-center justify-between border-b app-border pb-2">' +
+                  '<h4 class="text-sm sm:text-base font-extrabold text-primary-accent">' + title + '</h4>' +
+                  '<span class="text-xs px-2.5 py-0.5 rounded-full app-elevated">' + list.length + '</span>' +
+                '</div>' +
+                '<div class="space-y-2.5">' +
+                  (list.length ? list.map(renderTaskCardHTML).join('') : '<p class="text-xs text-muted-custom py-4 text-center">فارغ</p>') +
+                '</div>' +
+              '</div>'
+            );
+          }
+
+          container.innerHTML =
+            '<div class="grid grid-cols-1 lg:grid-cols-3 gap-4">' +
+              renderCol('الدراسة', studyTasks) +
+              renderCol('العمل', workTasks) +
+              renderCol('شخصي', personalTasks) +
+            '</div>';
+        }
+      };
+
+      // ==========================================
+      // TAB 2: POMODORO & STOPWATCH
+      // ==========================================
+      function populateLinkedTasksDropdown() {
+        var sel = document.getElementById('focusLinkedTaskSelect');
+        if (!sel) return;
+        var activeTasks = state.tasks.filter(function (t) { return !t.completed; });
+        sel.innerHTML = '<option value="">جلسة حرة</option>' +
+          activeTasks.map(function (t) {
+            return '<option value="' + t.id + '" ' + (linkedTaskId === t.id ? 'selected' : '') + '>' + escapeHtml(t.title) + '</option>';
+          }).join('');
+      }
+
+      window.updateLinkedTask = function (val) {
+        linkedTaskId = val;
+      };
+
+      window.setFocusEngine = function (engine) {
+        currentFocusEngine = engine;
+        var pDiv = document.getElementById('engine_pomodoro');
+        var sDiv = document.getElementById('engine_stopwatch');
+        var pBtn = document.getElementById('focusModeBtn_pomodoro');
+        var sBtn = document.getElementById('focusModeBtn_stopwatch');
+
+        if (engine === 'pomodoro') {
+          pDiv.classList.remove('hidden');
+          sDiv.classList.add('hidden');
+          pBtn.className = 'flex-1 sm:flex-initial px-5 py-2 rounded-lg text-sm bg-primary-accent text-white';
+          sBtn.className = 'flex-1 sm:flex-initial px-5 py-2 rounded-lg text-sm text-muted-custom';
+        } else {
+          sDiv.classList.remove('hidden');
+          pDiv.classList.add('hidden');
+          sBtn.className = 'flex-1 sm:flex-initial px-5 py-2 rounded-lg text-sm bg-primary-accent text-white';
+          pBtn.className = 'flex-1 sm:flex-initial px-5 py-2 rounded-lg text-sm text-muted-custom';
+        }
+      };
+
+      function formatMMSS(sec) {
+        var m = Math.floor(sec / 60);
+        var s = sec % 60;
+        return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+      }
+
+      function updatePomoUI() {
+        var disp = document.getElementById('pomoTimeDisplay');
+        if (disp) disp.textContent = formatMMSS(pomoRemainingSec);
+        var circle = document.getElementById('pomoRingCircle');
+        if (circle && pomoTotalSec > 0) {
+          var circumference = 666;
+          var offset = circumference - (pomoRemainingSec / pomoTotalSec) * circumference;
+          circle.style.strokeDashoffset = String(offset);
+        }
+        var pill = document.getElementById('headerLiveTimerPill');
+        if (pill) {
+          if (pomoRunning) {
+            pill.classList.remove('hidden');
+            pill.classList.add('flex');
+            document.getElementById('headerLiveTimerMode').textContent = 'بومودورو';
+            document.getElementById('headerLiveTimerValue').textContent = formatMMSS(pomoRemainingSec);
+          }
+          if (currentFocusEngine === 'pomodoro') {
+            syncLockScreenTimerUI('بومودورو', formatMMSS(pomoRemainingSec), pomoRunning);
+          } else if (!swRunning) {
+            pill.classList.add('hidden');
+            pill.classList.remove('flex');
+          }
+        }
+      }
+
+      window.switchPomodoroPhase = function (phase) {
+        if (pomoInterval) {
+          clearInterval(pomoInterval);
+          pomoInterval = null;
+        }
+        pomoRunning = false;
+        pomoPhase = phase;
+        document.getElementById('pomoStartBtnText').textContent = 'ابدأ المؤقت';
+
+        ['work', 'short', 'long'].forEach(function (p) {
+          var b = document.getElementById('pomoPhase_' + p);
+          if (b) {
+            b.className = (p === phase)
+              ? 'px-4 py-1.5 rounded-xl text-xs sm:text-sm bg-primary-accent text-white'
+              : 'px-4 py-1.5 rounded-xl text-xs sm:text-sm text-muted-custom';
+          }
+        });
+
+        var mins = state.pomoSettings.work || 25;
+        var label = 'جلسة تركيز';
+        if (phase === 'short') {
+          mins = state.pomoSettings.short || 5;
+          label = 'استراحة قصيرة';
+        } else if (phase === 'long') {
+          mins = state.pomoSettings.long || 15;
+          label = 'استراحة طويلة';
+        }
+        document.getElementById('pomoStatusLabel').textContent = label;
+        pomoTotalSec = mins * 60;
+        pomoRemainingSec = pomoTotalSec;
+        updatePomoUI();
+      };
+
+      window.togglePomodoro = function () {
+        if (pomoRunning) {
+          clearInterval(pomoInterval);
+          pomoInterval = null;
+          pomoRunning = false;
+          document.getElementById('pomoStartBtnText').textContent = 'متابعة';
+          updatePomoUI();
+        } else {
+          pomoRunning = true;
+          document.getElementById('pomoStartBtnText').textContent = 'إيقاف مؤقت';
+          pomoInterval = setInterval(function () {
+            if (pomoRemainingSec > 0) {
+              pomoRemainingSec--;
+              updatePomoUI();
+            } else {
+              clearInterval(pomoInterval);
+              pomoInterval = null;
+              pomoRunning = false;
+              playChime(523.25, 1046.5);
+              if (pomoPhase === 'work') {
+                var minsDone = Math.max(1, Math.round(pomoTotalSec / 60));
+                logCompletedSession(minsDone, 'بومودورو');
+                pomoRound = (pomoRound % 4) + 1;
+                document.getElementById('pomoRoundDisplay').textContent = 'الجولة ' + pomoRound;
+                window.switchPomodoroPhase(pomoRound === 1 ? 'long' : 'short');
+              } else {
+                window.switchPomodoroPhase('work');
+              }
+            }
+          }, 1000);
+          updatePomoUI();
+        }
+      };
+
+      window.resetPomodoro = function () {
+        window.switchPomodoroPhase(pomoPhase);
+      };
+
+      window.completePomodoroEarly = function () {
+        var elapsedSec = pomoTotalSec - pomoRemainingSec;
+        var mins = Math.max(1, Math.round(elapsedSec / 60));
+        if (elapsedSec < 30) {
+          window.showToast('شغّل الجلسة 30 ثانية على الأقل قبل حفظها', 'warning');
+          return;
+        }
+        logCompletedSession(mins, 'بومودورو');
+        window.resetPomodoro();
+      };
+
+      window.applyPomoPreset = function (w, s, l) {
+        document.getElementById('customPomoWork').value = w;
+        document.getElementById('customPomoShort').value = s;
+        document.getElementById('customPomoLong').value = l;
+        window.updateCustomPomoSettings();
+        window.showToast('تم ضبط الوقت: ' + w + ' د تركيز / ' + s + ' د استراحة', 'success');
+      };
+
+      window.updateCustomPomoSettings = function () {
+        var w = Math.max(1, parseInt(document.getElementById('customPomoWork').value, 10) || 25);
+        var s = Math.max(1, parseInt(document.getElementById('customPomoShort').value, 10) || 5);
+        var l = Math.max(1, parseInt(document.getElementById('customPomoLong').value, 10) || 15);
+        state.pomoSettings = { work: w, short: s, long: l };
+        saveState();
+        window.switchPomodoroPhase(pomoPhase);
+      };
+
+      // Stopwatch
+      function formatStopwatchParts(ms) {
+        var totalSec = Math.floor(ms / 1000);
+        var hrs = Math.floor(totalSec / 3600);
+        var mins = Math.floor((totalSec % 3600) / 60);
+        var secs = totalSec % 60;
+        var cs = Math.floor((ms % 1000) / 10);
+        return {
+          h: String(hrs).padStart(2, '0'),
+          m: String(mins).padStart(2, '0'),
+          s: String(secs).padStart(2, '0'),
+          cs: '.' + String(cs).padStart(2, '0')
+        };
+      }
+
+      function updateStopwatchUI() {
+        var parts = formatStopwatchParts(swElapsedMs);
+        document.getElementById('swHours').textContent = parts.h;
+        document.getElementById('swMinutes').textContent = parts.m;
+        document.getElementById('swSeconds').textContent = parts.s;
+        document.getElementById('swCentiseconds').textContent = parts.cs;
+
+        var pill = document.getElementById('headerLiveTimerPill');
+        if (pill && swRunning) {
+          pill.classList.remove('hidden');
+          pill.classList.add('flex');
+          document.getElementById('headerLiveTimerMode').textContent = 'حاسب الجلسة';
+          document.getElementById('headerLiveTimerValue').textContent = parts.h + ':' + parts.m + ':' + parts.s;
+        }
+        if (currentFocusEngine === 'stopwatch') {
+          syncLockScreenTimerUI('حاسب الجلسة', parts.h + ':' + parts.m + ':' + parts.s, swRunning);
+        } else if (pill && !pomoRunning) {
+          pill.classList.add('hidden');
+          pill.classList.remove('flex');
+        }
+      }
+
+      window.toggleStopwatch = function () {
+        if (swRunning) {
+          clearInterval(swInterval);
+          swInterval = null;
+          swRunning = false;
+          document.getElementById('swStartBtnText').textContent = 'استئناف الحساب';
+          document.getElementById('swLiveBadge').textContent = 'متوقف مؤقتاً';
+          updateStopwatchUI();
+        } else {
+          swRunning = true;
+          swStartTime = Date.now() - swElapsedMs;
+          document.getElementById('swStartBtnText').textContent = 'إيقاف مؤقت';
+          document.getElementById('swLiveBadge').textContent = 'جاري حساب طول الجلسة...';
+          swInterval = setInterval(function () {
+            swElapsedMs = Date.now() - swStartTime;
+            updateStopwatchUI();
+          }, 50);
+        }
+      };
+
+      window.recordStopwatchLap = function () {
+        if (swElapsedMs < 1000) {
+          window.showToast('ابدأ ساعة الإيقاف أولاً', 'warning');
+          return;
+        }
+        var parts = formatStopwatchParts(swElapsedMs);
+        swLaps.unshift({
+          idx: swLaps.length + 1,
+          timeStr: parts.h + ':' + parts.m + ':' + parts.s + parts.cs
+        });
+        renderStopwatchLaps();
+      };
+
+      function renderStopwatchLaps() {
+        var box = document.getElementById('swLapsContainer');
+        if (!box) return;
+        if (swLaps.length === 0) {
+          box.innerHTML = '';
+          return;
+        }
+        box.innerHTML = swLaps.map(function (l) {
+          return (
+            '<div class="flex items-center justify-between px-3.5 py-2 rounded-xl app-elevated text-xs sm:text-sm">' +
+              '<span class="text-primary-accent">فاصل #' + l.idx + '</span>' +
+              '<span class="font-mono" dir="ltr">' + l.timeStr + '</span>' +
+            '</div>'
+          );
+        }).join('');
+      }
+
+      window.finishAndSaveStopwatchSession = function () {
+        if (swElapsedMs < 10000) {
+          window.showToast('شغّل الجلسة 10 ثوانٍ على الأقل لحفظها', 'warning');
+          return;
+        }
+        var mins = Math.max(1, Math.round(swElapsedMs / 60000));
+        logCompletedSession(mins, 'حاسب الوقت');
+        window.resetStopwatch();
+      };
+
+      window.resetStopwatch = function () {
+        if (swInterval) {
+          clearInterval(swInterval);
+          swInterval = null;
+        }
+        swRunning = false;
+        swElapsedMs = 0;
+        swLaps = [];
+        document.getElementById('swStartBtnText').textContent = 'بدء حساب الجلسة';
+        document.getElementById('swLiveBadge').textContent = 'حاسب طول الجلسة (ساعة إيقاف)';
+        updateStopwatchUI();
+        renderStopwatchLaps();
+      };
+
+      function logCompletedSession(durationMin, modeLabel) {
+        var taskObj = state.tasks.find(function (t) { return t.id === linkedTaskId; });
+        var title = taskObj ? taskObj.title : 'جلسة تركيز';
+        if (taskObj) {
+          taskObj.spentMinutes = (taskObj.spentMinutes || 0) + durationMin;
+        }
+        var now = new Date();
+        var timeStr = todayStr + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+        state.sessions.unshift({
+          id: 's_' + Date.now(),
+          title: title,
+          mode: modeLabel,
+          durationMin: durationMin,
+          date: timeStr
+        });
+        state.xp = (state.xp || 0) + durationMin * 2;
+        saveState();
+        renderFocusSessionsLog();
+        window.showToast('تم حفظ الجلسة (' + durationMin + ' دقيقة)', 'success');
+      }
+
+      function renderFocusSessionsLog() {
+        var list = document.getElementById('focusSessionsLogList');
+        if (!list) return;
+        if (!state.sessions || state.sessions.length === 0) {
+          list.innerHTML = '<p class="text-xs sm:text-sm text-muted-custom text-center py-4">لا توجد جلسات مسجلة بعد.</p>';
+          return;
+        }
+        list.innerHTML = state.sessions.map(function (s) {
+          return (
+            '<div class="p-3 rounded-xl app-elevated flex items-center justify-between gap-2 text-xs sm:text-sm">' +
+              '<div>' +
+                '<div class="font-extrabold">' + escapeHtml(s.title) + '</div>' +
+                '<div class="text-xs text-muted-custom">' + escapeHtml(s.mode) + ' • ' + escapeHtml(s.date) + '</div>' +
+              '</div>' +
+              '<span class="px-3 py-1 rounded-xl bg-primary-soft text-primary-accent font-extrabold shrink-0">' + s.durationMin + ' د</span>' +
+            '</div>'
+          );
+        }).join('');
+      }
+
+      // Ambient Sound
+      window.setAmbientSound = function (type) {
+        ['off', 'brown', 'rain', 'alpha'].forEach(function (t) {
+          var b = document.getElementById('soundBtn_' + t);
+          if (b) {
+            b.className = (t === type)
+              ? 'sound-btn p-2.5 rounded-xl app-elevated border border-primary-accent text-primary-accent'
+              : 'sound-btn p-2.5 rounded-xl app-elevated';
+          }
+        });
+
+        if (ambientNode) {
+          try { ambientNode.stop(); } catch (e) {}
+          try { ambientNode.disconnect(); } catch (e) {}
+          ambientNode = null;
+        }
+
+        var badge = document.getElementById('ambientStatusBadge');
+        if (type === 'off') {
+          if (badge) badge.textContent = 'متوقف';
+          return;
+        }
+
+        try {
+          var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return;
+          if (!audioCtx) audioCtx = new AudioContextClass();
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+
+          var vol = (parseInt(document.getElementById('ambientVolumeSlider').value, 10) || 40) / 100;
+          ambientGain = audioCtx.createGain();
+          ambientGain.gain.value = vol * 0.25;
+          ambientGain.connect(audioCtx.destination);
+
+          if (type === 'brown' || type === 'rain') {
+            var bufferSize = audioCtx.sampleRate * 2;
+            var noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            var output = noiseBuffer.getChannelData(0);
+            var lastOut = 0.0;
+            for (var i = 0; i < bufferSize; i++) {
+              var white = Math.random() * 2 - 1;
+              if (type === 'brown') {
+                output[i] = (lastOut + (0.02 * white)) / 1.02;
+                lastOut = output[i];
+                output[i] *= 3.5;
+              } else {
+                output[i] = white * 0.35;
+              }
+            }
+            var whiteNoise = audioCtx.createBufferSource();
+            whiteNoise.buffer = noiseBuffer;
+            whiteNoise.loop = true;
+
+            var filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = type === 'brown' ? 420 : 1100;
+            whiteNoise.connect(filter);
+            filter.connect(ambientGain);
+            whiteNoise.start(0);
+            ambientNode = whiteNoise;
+          } else if (type === 'alpha') {
+            var osc = audioCtx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.value = 174;
+            osc.connect(ambientGain);
+            osc.start();
+            ambientNode = osc;
+          }
+          if (badge) badge.textContent = 'يعمل الآن';
+        } catch (e) {}
+      };
+
+      window.updateAmbientVolume = function (val) {
+        if (ambientGain) {
+          ambientGain.gain.value = (parseInt(val, 10) / 100) * 0.25;
+        }
+      };
+
+      // ==========================================
+      // TAB 3: HABITS & FOLLOW-UP
+      // ==========================================
+      function getLast7Days() {
+        var days = [];
+        var dayNames = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
+        for (var i = 6; i >= 0; i--) {
+          var d = new Date();
+          d.setDate(d.getDate() - i);
+          var iso = d.toISOString().slice(0, 10);
+          days.push({
+            iso: iso,
+            label: dayNames[d.getDay()],
+            dayNum: d.getDate()
+          });
+        }
+        return days;
+      }
+
+      window.addHabit = function () {
+        var inp = document.getElementById('newHabitTitle');
+        var title = (inp.value || '').trim();
+        if (!title) {
+          window.showToast('اكتب اسم العادة أولاً', 'warning');
+          return;
+        }
+        var cat = document.getElementById('newHabitCategory').value || 'دراسة';
+        state.habits.push({
+          id: 'h_' + Date.now(),
+          title: title,
+          category: cat,
+          history: {}
+        });
+        inp.value = '';
+        saveState();
+        renderHabitsTable();
+        window.showToast('تمت إضافة العادة لجدول المتابعة', 'success');
+      };
+
+      window.toggleHabitDay = function (habitId, dateIso) {
+        var h = state.habits.find(function (item) { return item.id === habitId; });
+        if (!h) return;
+        if (!h.history) h.history = {};
+        h.history[dateIso] = !h.history[dateIso];
+        if (h.history[dateIso]) {
+          state.xp = (state.xp || 0) + 15;
+          playChime(659.25, 880);
+        }
+        saveState();
+        renderHabitsTable();
+      };
+
+      window.deleteHabit = function (habitId) {
+        window.askConfirmation(
+          'تأكيد حذف العادة',
+          'هل أنت متأكد من حذف هذه العادة من جدول المتابعة؟',
+          function () {
+            state.habits = state.habits.filter(function (h) { return h.id !== habitId; });
+            saveState();
+            renderHabitsTable();
+            window.showToast('تم حذف العادة', 'warning');
+          }
+        );
+      };
+
+      function renderHabitsTable() {
+        var box = document.getElementById('habitsTableContainer');
+        if (!box) return;
+        if (state.habits.length === 0) {
+          document.getElementById('statHabitRate').textContent = '0%';
+          box.innerHTML = '<p class="text-sm text-muted-custom text-center py-8">لا توجد عادات مضافة بعد — أضف أول عادة يومية من الشريط العلوي.</p>';
+          return;
+        }
+
+        var days = getLast7Days();
+        var totalPossible = Math.max(1, state.habits.length * 7);
+        var totalChecked = 0;
+
+        var headerCols = days.map(function (d) {
+          var isToday = d.iso === todayStr;
+          return (
+            '<th class="p-2 text-center text-xs ' + (isToday ? 'text-primary-accent font-extrabold' : 'text-muted-custom') + '">' +
+              '<div>' + d.label + '</div>' +
+              '<div class="text-[11px]">' + d.dayNum + '</div>' +
+            '</th>'
+          );
+        }).join('');
+
+        var rows = state.habits.map(function (h) {
+          var streakCount = 0;
+          var cells = days.map(function (d) {
+            var checked = Boolean(h.history && h.history[d.iso]);
+            if (checked) {
+              streakCount++;
+              totalChecked++;
+            }
+            return (
+              '<td class="p-2 text-center">' +
+                '<button onclick="window.toggleHabitDay(\'' + h.id + '\',\'' + d.iso + '\')" class="w-9 h-9 rounded-xl mx-auto flex items-center justify-center font-extrabold transition ' +
+                  (checked ? 'bg-primary-accent text-white shadow-primary-glow' : 'app-elevated text-muted-custom hover:border-primary-accent') + '">' +
+                  (checked ? '✓' : '·') +
+                '</button>' +
+              '</td>'
+            );
+          }).join('');
+
+          return (
+            '<tr class="border-t app-border">' +
+              '<td class="p-3">' +
+                '<div class="font-extrabold text-sm">' + escapeHtml(h.title) + '</div>' +
+                '<span class="text-xs text-muted-custom">' + escapeHtml(h.category) + '</span>' +
+              '</td>' +
+              cells +
+              '<td class="p-2 text-center font-extrabold text-xs sm:text-sm text-amber-400">' + streakCount + '/7</td>' +
+              '<td class="p-2 text-center">' +
+                '<button onclick="window.deleteHabit(\'' + h.id + '\')" class="text-muted-custom hover:text-rose-400 text-sm">✕</button>' +
+              '</td>' +
+            '</tr>'
+          );
+        }).join('');
+
+        var rate = Math.round((totalChecked / totalPossible) * 100);
+        document.getElementById('statHabitRate').textContent = rate + '% التزام';
+
+        box.innerHTML =
+          '<table class="w-full text-right border-collapse">' +
+            '<thead>' +
+              '<tr>' +
+                '<th class="p-2 text-xs sm:text-sm text-muted-custom">العادة اليومية</th>' +
+                headerCols +
+                '<th class="p-2 text-center text-xs sm:text-sm text-muted-custom">الأسبوع</th>' +
+                '<th class="p-2"></th>' +
+              '</tr>' +
+            '</thead>' +
+            '<tbody>' + rows + '</tbody>' +
+          '</table>';
+      }
+
+      // ==========================================
+      // TAB 4: ANTI-DROWSINESS & ENERGY
+      // ==========================================
+      window.selectEnergyRescue = function (key) {
+        ['sleepy', 'procrastinate', 'distracted', 'overwhelmed'].forEach(function (k) {
+          var b = document.getElementById('rescueBtn_' + k);
+          if (b) {
+            b.className = (k === key)
+              ? 'rescue-btn p-3 rounded-xl app-elevated border border-primary-accent text-right'
+              : 'rescue-btn p-3 rounded-xl app-elevated text-right';
+          }
+        });
+        var proto = RESCUE_PROTOCOLS[key];
+        if (!proto) return;
+        document.getElementById('rescueProtocolTitle').textContent = proto.title;
+        document.getElementById('rescueProtocolText').textContent = proto.text;
+        var actBtn = document.getElementById('rescueProtocolActionBtn');
+        actBtn.textContent = proto.btnText;
+        actBtn.onclick = proto.action;
+      };
+
+      window.startBreathingExercise = function () {
+        var btn = document.getElementById('breathToggleBtn');
+        var orb = document.getElementById('breathOrbOuter');
+        var phaseTxt = document.getElementById('breathPhaseText');
+        var secTxt = document.getElementById('breathTimerSec');
+
+        if (breathRunning) {
+          window.resetBreathingExercise();
+          return;
+        }
+
+        breathRunning = true;
+        btn.textContent = 'إيقاف التمرين';
+        var pattern = document.getElementById('breathPatternSelect').value || 'energize';
+        var phases = pattern === 'energize'
+          ? [{ name: 'شهيق عميق', sec: 4, scale: 'scale(1.25)' }, { name: 'ثبات', sec: 2, scale: 'scale(1.25)' }, { name: 'زفير قوي', sec: 4, scale: 'scale(0.88)' }]
+          : (pattern === 'box'
+            ? [{ name: 'شهيق', sec: 4, scale: 'scale(1.25)' }, { name: 'ثبات', sec: 4, scale: 'scale(1.25)' }, { name: 'زفير', sec: 4, scale: 'scale(0.9)' }, { name: 'ثبات', sec: 4, scale: 'scale(0.9)' }]
+            : [{ name: 'شهيق', sec: 4, scale: 'scale(1.25)' }, { name: 'احبس النفس', sec: 7, scale: 'scale(1.25)' }, { name: 'زفير هادئ', sec: 8, scale: 'scale(0.88)' }]);
+
+        var pIdx = 0;
+        var rem = phases[0].sec;
+        phaseTxt.textContent = phases[0].name;
+        secTxt.textContent = rem + ' ث';
+        orb.style.transform = phases[0].scale;
+
+        breathInterval = setInterval(function () {
+          rem--;
+          if (rem <= 0) {
+            pIdx = (pIdx + 1) % phases.length;
+            rem = phases[pIdx].sec;
+            phaseTxt.textContent = phases[pIdx].name;
+            orb.style.transform = phases[pIdx].scale;
+            playChime(440, 554.37);
+          }
+          secTxt.textContent = rem + ' ث';
+        }, 1000);
+      };
+
+      window.resetBreathingExercise = function () {
+        if (breathInterval) {
+          clearInterval(breathInterval);
+          breathInterval = null;
+        }
+        breathRunning = false;
+        var btn = document.getElementById('breathToggleBtn');
+        if (btn) btn.textContent = 'بدء تمرين التنفس';
+        var orb = document.getElementById('breathOrbOuter');
+        if (orb) orb.style.transform = 'scale(1)';
+        var phaseTxt = document.getElementById('breathPhaseText');
+        if (phaseTxt) phaseTxt.textContent = 'مستعد؟';
+        var secTxt = document.getElementById('breathTimerSec');
+        if (secTxt) secTxt.textContent = '--';
+      };
+
+      window.pickRandomTaskForMicro = function () {
+        var pending = state.tasks.filter(function (t) { return !t.completed; });
+        var lbl = document.getElementById('microChallengeTaskLabel');
+        if (pending.length === 0) {
+          lbl.textContent = 'ابدأ بترتيب مكتبك أو قراءة أول صفحة في دقيقتين';
+          return;
+        }
+        var pick = pending[Math.floor(Math.random() * pending.length)];
+        lbl.textContent = 'المهمة: ' + pick.title;
+      };
+
+      window.toggleMicroChallenge = function () {
+        var btn = document.getElementById('microChallengeBtn');
+        var clk = document.getElementById('microChallengeClock');
+        if (microRunning) {
+          clearInterval(microInterval);
+          microInterval = null;
+          microRunning = false;
+          microSec = 120;
+          clk.textContent = '02:00';
+          btn.textContent = 'ابدأ دقيقتين فقط';
+          return;
+        }
+        microRunning = true;
+        btn.textContent = 'إيقاف';
+        microInterval = setInterval(function () {
+          if (microSec > 0) {
+            microSec--;
+            clk.textContent = formatMMSS(microSec);
+          } else {
+            clearInterval(microInterval);
+            microInterval = null;
+            microRunning = false;
+            microSec = 120;
+            clk.textContent = '02:00';
+            btn.textContent = 'ابدأ دقيقتين فقط';
+            state.xp = (state.xp || 0) + 30;
+            saveState();
+            playChime(587.33, 1174.66);
+            window.showToast('أحسنت! كسرت حاجز البداية بنجاح', 'success');
+          }
+        }, 1000);
+      };
+
+      window.setHydrationCups = function (count) {
+        state.hydration = (state.hydration === count) ? count - 1 : count;
+        saveState();
+        renderEnergyHub();
+      };
+
+      window.toggleDeskRefreshItem = function (key) {
+        if (!state.deskChecks) state.deskChecks = {};
+        state.deskChecks[key] = !state.deskChecks[key];
+        saveState();
+        renderEnergyHub();
+      };
+
+      window.nextMotivationalQuote = function () {
+        quoteIndex = (quoteIndex + 1) % MOTIVATIONAL_QUOTES.length;
+      };
+
+      function renderEnergyHub() {
+        var cupsGrid = document.getElementById('waterCupsGrid');
+        var hCount = state.hydration || 0;
+        document.getElementById('hydrationCountText').textContent = hCount + ' / 8 أكواب';
+        if (cupsGrid) {
+          var cupsHtml = '';
+          for (var i = 1; i <= 8; i++) {
+            var filled = i <= hCount;
+            cupsHtml +=
+              '<button onclick="window.setHydrationCups(' + i + ')" class="h-10 rounded-xl flex items-center justify-center transition ' +
+                (filled ? 'bg-sky-500 text-white shadow' : 'app-elevated text-muted-custom hover:border-sky-400') + '" title="كوب ' + i + '">' +
+                '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>' +
+              '</button>';
+          }
+          cupsGrid.innerHTML = cupsHtml;
+        }
+
+        var deskItems = [
+          { key: 'eye20', label: 'إراحة العينين (النظر بعيداً لمدة 20 ثانية)' },
+          { key: 'stretch', label: 'تحريك الكتفين والرقبة لمدة 30 ثانية' },
+          { key: 'coldWater', label: 'غسل الوجه بماء بارد لطرد النعاس' },
+          { key: 'standUp', label: 'الوقوف والمشي لدقيقة لتنشيط الدورة الدموية' }
+        ];
+        var deskBox = document.getElementById('deskRefreshChecklist');
+        if (deskBox) {
+          deskBox.innerHTML = deskItems.map(function (it) {
+            var done = Boolean(state.deskChecks && state.deskChecks[it.key]);
+            return (
+              '<label class="flex items-center gap-2.5 p-3 rounded-xl app-elevated cursor-pointer">' +
+                '<input type="checkbox" ' + (done ? 'checked' : '') + ' onchange="window.toggleDeskRefreshItem(\'' + it.key + '\')" class="w-4 h-4 rounded accent-blue-500" />' +
+                '<span class="' + (done ? 'line-through opacity-55' : '') + '">' + it.label + '</span>' +
+              '</label>'
+            );
+          }).join('');
+        }
+      }
+
+      // ==========================================
+      // TAB 5: LIBRARY, FLASHCARDS & ARCHIVE
+      // ==========================================
+      window.switchLibraryView = function (view) {
+        ['notes', 'cards', 'archive'].forEach(function (v) {
+          var el = document.getElementById('libView_' + v);
+          var btn = document.getElementById('libTab_' + v);
+          if (el) {
+            if (v === view) el.classList.remove('hidden');
+            else el.classList.add('hidden');
+          }
+          if (btn) {
+            btn.className = (v === view)
+              ? 'px-4 py-2 rounded-xl text-xs sm:text-sm bg-primary-accent text-white'
+              : 'px-4 py-2 rounded-xl text-xs sm:text-sm app-elevated';
+          }
+        });
+        renderLibraryAll();
+      };
+
+      window.addStudyNote = function () {
+        var tInp = document.getElementById('noteTitleInput');
+        var bInp = document.getElementById('noteBodyInput');
+        var cat = document.getElementById('noteCategoryInput').value || 'ملخص دراسة';
+        var title = (tInp.value || '').trim();
+        var body = (bInp.value || '').trim();
+        if (!title || !body) {
+          window.showToast('اكتب عنوان ومحتوى الملاحظة', 'warning');
+          return;
+        }
+        state.notes.unshift({
+          id: 'n_' + Date.now(),
+          title: title,
+          category: cat,
+          body: body,
+          date: todayStr
+        });
+        tInp.value = '';
+        bInp.value = '';
+        saveState();
+        renderLibraryAll();
+        window.showToast('تم حفظ الملاحظة', 'success');
+      };
+
+      window.deleteStudyNote = function (id) {
+        window.askConfirmation(
+          'تأكيد حذف الملاحظة',
+          'هل أنت متأكد من حذف هذه الملاحظة؟ لا يمكن استعادتها بعد الحذف.',
+          function () {
+            state.notes = state.notes.filter(function (n) { return n.id !== id; });
+            saveState();
+            renderLibraryAll();
+            window.showToast('تم حذف الملاحظة', 'warning');
+          }
+        );
+      };
+
+      window.clearAllNotesConfirm = function () {
+        if (!state.notes || state.notes.length === 0) {
+          window.showToast('لا توجد ملاحظات لحذفها حالياً', 'warning');
+          return;
+        }
+        window.askConfirmation(
+          'تأكيد تصفير جميع الملاحظات',
+          'هل أنت متأكد من رغبتك في مسح وتصفير كافة الملاحظات المحفوظة؟',
+          function () {
+            state.notes = [];
+            saveState();
+            renderLibraryAll();
+            window.showToast('تم تصفير جميع الملاحظات بنجاح', 'success');
+          }
+        );
+      };
+
+      window.copyStudyNote = function (id) {
+        var n = state.notes.find(function (item) { return item.id === id; });
+        if (!n) return;
+        window.copyTextSafe(n.title + '\n\n' + n.body, function () {
+          window.showToast('تم نسخ الملاحظة', 'success');
+        });
+      };
+
+      window.addFlashcard = function () {
+        var fInp = document.getElementById('cardFrontInput');
+        var bInp = document.getElementById('cardBackInput');
+        var front = (fInp.value || '').trim();
+        var back = (bInp.value || '').trim();
+        if (!front || !back) {
+          window.showToast('أدخل السؤال والإجابة أولاً', 'warning');
+          return;
+        }
+        state.flashcards.unshift({
+          id: 'fc_' + Date.now(),
+          front: front,
+          back: back
+        });
+        fInp.value = '';
+        bInp.value = '';
+        saveState();
+        renderLibraryAll();
+        window.showToast('تمت إضافة البطاقة', 'success');
+      };
+
+      window.deleteFlashcard = function (id) {
+        window.askConfirmation(
+          'تأكيد حذف البطاقة',
+          'هل أنت متأكد من حذف بطاقة المراجعة هذه؟',
+          function () {
+            state.flashcards = state.flashcards.filter(function (c) { return c.id !== id; });
+            saveState();
+            renderLibraryAll();
+            window.showToast('تم حذف البطاقة', 'warning');
+          }
+        );
+      };
+
+      function renderLibraryAll() {
+        var nGrid = document.getElementById('studyNotesGrid');
+        if (nGrid) {
+          if (state.notes.length === 0) {
+            nGrid.innerHTML = '<p class="text-sm text-muted-custom col-span-full text-center py-6">لا توجد ملاحظات محفوظة بعد.</p>';
+          } else {
+            nGrid.innerHTML = state.notes.map(function (n) {
+              return (
+                '<div class="app-surface p-4 rounded-2xl flex flex-col justify-between space-y-3">' +
+                  '<div class="space-y-2">' +
+                    '<div class="flex items-center justify-between gap-2">' +
+                      '<span class="text-xs px-2.5 py-0.5 rounded-lg bg-primary-soft text-primary-accent font-extrabold">' + escapeHtml(n.category) + '</span>' +
+                      '<span class="text-xs text-muted-custom">' + escapeHtml(n.date || todayStr) + '</span>' +
+                    '</div>' +
+                    '<h4 class="text-base font-extrabold">' + escapeHtml(n.title) + '</h4>' +
+                    '<p class="text-xs sm:text-sm text-muted-custom whitespace-pre-line leading-relaxed">' + escapeHtml(n.body) + '</p>' +
+                  '</div>' +
+                  '<div class="flex items-center justify-end gap-2 pt-2 border-t app-border">' +
+                    '<button onclick="window.pinNoteToWidget(\'' + n.id + '\')" class="text-xs px-3 py-1 rounded-lg bg-primary-soft text-primary-accent">تثبيت بالويدجت</button>' +
+                    '<button onclick="window.copyStudyNote(\'' + n.id + '\')" class="text-xs px-3 py-1 rounded-lg app-elevated">نسخ</button>' +
+                    '<button onclick="window.deleteStudyNote(\'' + n.id + '\')" class="text-xs px-3 py-1 rounded-lg app-elevated text-rose-400">حذف</button>' +
+                  '</div>' +
+                '</div>'
+              );
+            }).join('');
+          }
+        }
+
+        var cGrid = document.getElementById('flashcardsGrid');
+        if (cGrid) {
+          if (state.flashcards.length === 0) {
+            cGrid.innerHTML = '<p class="text-sm text-muted-custom col-span-full text-center py-6">لا توجد بطاقات مراجعة بعد.</p>';
+          } else {
+            cGrid.innerHTML = state.flashcards.map(function (c) {
+              return (
+                '<div onclick="this.classList.toggle(\'flipped\')" class="flashcard-box cursor-pointer h-44">' +
+                  '<div class="flashcard-inner relative w-full h-full">' +
+                    '<div class="flashcard-face absolute inset-0 app-surface rounded-2xl p-4 flex flex-col justify-between border border-primary-accent/30">' +
+                      '<div class="flex items-center justify-between text-xs text-primary-accent font-extrabold">' +
+                        '<span>سؤال (اضغط للقلب)</span>' +
+                        '<button onclick="event.stopPropagation(); window.deleteFlashcard(\'' + c.id + '\')" class="text-muted-custom hover:text-rose-400">✕</button>' +
+                      '</div>' +
+                      '<div class="text-sm sm:text-base font-extrabold text-center my-auto">' + escapeHtml(c.front) + '</div>' +
+                      '<div class="text-xs text-muted-custom text-center">اضغط لإظهار الإجابة ↺</div>' +
+                    '</div>' +
+                    '<div class="flashcard-face flashcard-back absolute inset-0 app-elevated rounded-2xl p-4 flex flex-col justify-between border-2 border-emerald-500/40">' +
+                      '<span class="text-xs text-emerald-400 font-extrabold">الإجابة:</span>' +
+                      '<div class="text-sm sm:text-base text-center my-auto">' + escapeHtml(c.back) + '</div>' +
+                      '<div class="text-xs text-muted-custom text-center">اضغط للعودة للسؤال</div>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>'
+              );
+            }).join('');
+          }
+        }
+
+        var arch = document.getElementById('archiveSummaryBox');
+        if (arch) {
+          var totalMin = state.sessions.reduce(function (acc, s) { return acc + (Number(s.durationMin) || 0); }, 0);
+          arch.innerHTML =
+            '<div class="p-4 rounded-2xl app-elevated space-y-1">' +
+              '<div class="text-xs text-muted-custom">ملخص البيانات المحفوظة</div>' +
+              '<div class="text-sm font-extrabold">' +
+                state.tasks.length + ' مهام • ' +
+                state.habits.length + ' عادات • ' +
+                state.sessions.length + ' جلسات (' + totalMin + ' د) • ' +
+                state.notes.length + ' ملاحظات' +
+              '</div>' +
+            '</div>' +
+            '<div class="p-4 rounded-2xl app-elevated space-y-1">' +
+              '<div class="text-xs text-muted-custom">الألوان الحالية</div>' +
+              '<div class="text-sm font-mono font-extrabold text-primary-accent" dir="ltr">الخلفية: ' + (state.theme.bgHex || '#0B101B') + ' | البارز: ' + state.theme.primary + '</div>' +
+            '</div>';
+        }
+      }
+
+      // ==========================================
+      // EXPORT & IMPORT
+      // ==========================================
+      window.exportAllDataJSON = function () {
+        var jsonStr = JSON.stringify(state, null, 2);
+        window.downloadFileSafe('munjiz_backup_' + todayStr + '.json', jsonStr, 'application/json;charset=utf-8');
+      };
+
+      window.importDataJSON = function (event) {
+        var file = event.target.files && event.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            var imported = JSON.parse(e.target.result);
+            if (imported && Array.isArray(imported.tasks)) {
+              state = Object.assign({}, JSON.parse(JSON.stringify(DEFAULT_STATE)), imported);
+              saveState();
+              window.applyPrimaryColor(state.theme.primary || '#458AFF');
+              window.applyCustomBackgroundColor(state.theme.bgHex || '#0B101B');
+              window.renderTasks();
+              window.closeBackupModal();
+              window.showToast('تم استيراد النسخة الاحتياطية بنجاح', 'success');
+            } else {
+              window.showToast('ملف غير صالح', 'error');
+            }
+          } catch (err) {
+            window.showToast('تعذر قراءة الملف', 'error');
+          }
+        };
+        reader.readAsText(file);
+      };
+
+      window.copyStudyReport = function () {
+        var doneCount = state.tasks.filter(function (t) { return t.completed; }).length;
+        var totalMin = state.sessions.reduce(function (acc, s) { return acc + (Number(s.durationMin) || 0); }, 0);
+        var report =
+          '[تقرير الإنجاز - تطبيق مُنجز]\n' +
+          '• التاريخ: ' + todayStr + '\n' +
+          '• المهام المكتملة: ' + doneCount + ' من ' + state.tasks.length + '\n' +
+          '• وقت التركيز والدراسة: ' + totalMin + ' دقيقة (' + state.sessions.length + ' جلسات)\n';
+        window.copyTextSafe(report, function () {
+          window.showToast('تم نسخ التقرير إلى الحافظة', 'success');
+        });
+      };
+
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function initApp() {
+        document.getElementById('newTaskDate').value = todayStr;
+        window.setAppFont(state.theme.fontFamily || 'Readex Pro');
+        window.setAppFontSize(state.theme.fontSize || 17);
+        applyFontWeight();
+        window.applyCustomBackgroundColor(state.theme.bgHex || '#0B101B');
+        window.applyPrimaryColor(state.theme.primary || '#458AFF');
+        document.getElementById('customPomoWork').value = state.pomoSettings.work || 25;
+        document.getElementById('customPomoShort').value = state.pomoSettings.short || 5;
+        document.getElementById('customPomoLong').value = state.pomoSettings.long || 15;
+        window.switchPomodoroPhase('work');
+        updateHeaderAndStats();
+        window.renderTasks();
+        renderFocusSessionsLog();
+        renderHabitsTable();
+        renderEnergyHub();
+        renderLibraryAll();
+        updateSalawatUI();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initApp);
+      } else {
+        initApp();
+      }
+    })();
+  </script>
+</body>
+</html>
